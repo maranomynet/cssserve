@@ -8,7 +8,7 @@
 - Publish scriptur fyrir **npm pakka** með react components (npm:
   `@reykjavik/react`)
 
-### `rvk-css-server` – HTTP2 CSS server með `Link: rel=preload` og látum.
+### `rvk-cssserver` – HTTP2 CSS server með `Link: rel=preload` og látum.
 
 - SASS drifin templating
 - Building a complete archive of static CSS files

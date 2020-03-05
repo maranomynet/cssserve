@@ -1,7 +1,10 @@
-/* global process */
-const { parallel, series } = require('gulp');
+const { parallel, series, src, dest } = require('gulp');
 const rollupTaskFactory = require('@hugsmidjan/gulp-rollup');
 const del = require('del');
+const writeFile = require('fs').writeFileSync;
+
+const distFolder = 'dist/';
+const testsFolder = '__tests/';
 
 // ===========================================================================
 
@@ -24,14 +27,14 @@ const [scriptsBundle, scriptsWatch] = rollupTaskFactory({
 	name: 'build_server',
 	glob: ['server.ts'],
 	// glob: ['**/*.ts', '!**/*{tests,privates,WIP}.ts', '!__testing/**/*.ts'];,
-	dist: 'dist/',
+	dist: distFolder,
 });
 
 const [testsBundle, testsWatch] = rollupTaskFactory({
 	...baseOpts,
 	name: 'build_tests',
 	glob: ['**/*.tests.ts'],
-	dist: '__tests/',
+	dist: testsFolder,
 	// // TODO: Create a ospec gulp plugin
 	// onWatchEvent: (e) => {
 	// 	if (e.code === 'BUNDLE_END') {
@@ -53,14 +56,33 @@ const cssVersion = process.env.NODE_ENV === 'production' ? pkg.version : 'canary
 
 // ===========================================================================
 
-const cleanup = () => del(['dist/', '__tests/']);
+const cleanup = () => del([distFolder, testsFolder]);
+
+const makePackageJson = (done) => {
+	const pkg = require('./package.json');
+	const { dist_package_json } = pkg;
+
+	delete pkg.dist_package_json;
+	delete pkg.scripts;
+	delete pkg.engines;
+	delete pkg.private;
+	delete pkg.devDependencies;
+	delete pkg.__devDependencies__;
+	delete pkg.hxmstyle;
+
+	Object.assign(pkg, dist_package_json);
+	writeFile(distFolder + 'package.json', JSON.stringify(pkg, null, '\t'));
+	done();
+};
+
+const copyDocs = () => src(['README.md', 'CHANGELOG.md']).pipe(dest(distFolder));
 
 // ===========================================================================
 
-const buildServer = series(cleanup, parallel(scriptsBundle, testsBundle));
-const watchAll = parallel(/* cssDevWatch,  */ scriptsWatch, testsWatch);
+const bundle = series(cleanup, parallel(scriptsBundle, testsBundle));
+const watch = parallel(scriptsWatch, testsWatch);
+const publishPrep = parallel(makePackageJson, copyDocs);
 
-exports.publish = parallel(buildServer /* , cssPublishBuild */);
-exports.dev = series(parallel(buildServer /* , cssDevBuild */), watchAll);
-
-// exports.default = exports.dev;
+exports.dev = series(bundle, watch);
+exports.build = series(bundle, publishPrep);
+exports.default = exports.build;

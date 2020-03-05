@@ -1,43 +1,50 @@
 {
-	"name": "rvk-css-server",
-	"version": "0.0.0",
-	"main": "index.js",
+	"name": "@hugsmidjan_is/cssserver",
+	"version": "0.1.0",
+	"dist_package_json": {
+		"bin": {
+			"hxmstyle": "server.js"
+		},
+		"scripts": {}
+	},
 	"engines": {
 		"node": "^12"
 	},
-	"author": "Hugsmiðjan ehf (http://www.hugsmidjan.is)",
-	"contributors": [
-		"Már Örlygsson <mar@hugsmidjan.is>"
-	],
 	"private": true,
 	"license": "UNLICENCED",
 	"scripts": {
+		"publishdist": "yarn run build  &&  npm publish dist",
+		"publishcanary": "yarn run build  &&  npm publish dist --tag canary",
+		"prepublishOnly": "echo \"\nRun 'yarn run publishdist' to publish this package\n\n\"  && exit 1",
 		"format": "eslint --fix  \"*.js\" \"build/*.js\" \"src/**/*.{js,ts,tsx}\"  &&  prettier --write \"*.md\" \"*.json\"  \"src/**/*.json\"",
 		"build": "gulp build  &&  yarn run test",
 		"dev": "gulp dev",
 		"test": "ospec '__tests/**/*.tests.js'",
-		"test:dev": "yarn run test  &&  onchange '__tests/**/*.tests.js' -f add,change -- ospec {{changed}}"
+		"test:dev": "yarn run test  &&  onchange '__tests/**/*.tests.js' -f add,change -- ospec {{changed}}",
+		"start": "yarn run build  &&  node dist/server"
 	},
 	"dependencies": {
+		"compression": "^1.7.4",
+		"fastify": "^2.12.0",
+		"fastify-compress": "^2.0.1",
+		"fastify-static": "^2.6.0",
+		"glob": "^7.1.6",
+		"rc": "^1.2.8"
+	},
+	"devDependencies": {
 		"@hugsmidjan/gulp-rollup": "^0.3.19",
 		"@hugsmidjan_is/qj": "^3.5.0",
 		"@types/compression": "^1.7.0",
 		"@types/node": "^12",
 		"@types/ospec": "^4.0.2",
-		"compression": "^1.7.4",
-		"del": "^5.1.0",
-		"fastify": "^2.12.0",
-		"fastify-compress": "^2.0.1",
-		"fastify-static": "^2.6.0",
-		"glob": "^7.1.6",
-		"gulp": "^4.0.2",
-		"ospec": "^4.0.1",
-		"typescript": "^3.8.2"
-	},
-	"devDependencies": {
+		"@types/rc": "^1.1.0",
 		"@hugsmidjan/hxmstyle": "^2.4.0",
 		"@typescript-eslint/eslint-plugin": "^2.21.0",
 		"@typescript-eslint/parser": "^2.21.0",
+		"del": "^5.1.0",
+		"gulp": "^4.0.2",
+		"ospec": "^4.0.1",
+		"typescript": "^3.8.2",
 		"eslint": "^6.8.0",
 		"eslint-config-prettier": "^6.10.0",
 		"eslint-plugin-destructuring": "^2.1.0",
@@ -58,5 +65,10 @@
 			"eslint-plugin-prettier",
 			"prettier"
 		]
-	}
+	},
+	"author": "Hugsmiðjan ehf (http://www.hugsmidjan.is)",
+	"contributors": [
+		"Már Örlygsson <mar@hugsmidjan.is>"
+	],
+	"repository": "ssh://git@stash.hugsmidjan.is:7999/npm/rvk-css-server.git"
 }

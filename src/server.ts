@@ -1,39 +1,44 @@
-// import { Http2ServerResponse, Http2ServerRequest } from 'http2';
-import fastify, { ServerOptionsAsSecureHttp2 } from 'fastify';
+// #!/usr/bin/env node
+import fastify, { ServerOptionsAsHttp2, ServerOptionsAsSecureHttp2 } from 'fastify';
 import fastifyCompress from 'fastify-compress';
 import fastifyStatic from 'fastify-static';
 import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import cssBundler from './cssBundler';
+import config from './config';
 
-const MINUTE = 60 * 1000;
-const HOUR = 60 * MINUTE;
+const {
+	port,
+	staticFolder,
+	proxied,
+	// sslKeyPath,
+	sslCert,
+	sslPrivkey,
+	ttl_static,
+} = config;
 
-// const projRoot = process.cwd() + '/'; // fails if server is started from folder other than project root
-const projRoot = __dirname + '/../';
-
-const isProxied = /^(?:true|yes)$/i.test(process.env.PROXIED || '');
-const port = parseInt(process.env.NODE_PORT || '') || 4000;
+const sslKeyPath = config.sslKeyPath || __dirname + '/default-keys/';
 
 const app = fastify({
 	http2: true,
-	https: isProxied
+	https: proxied
 		? undefined
 		: {
 				allowHTTP1: true,
-				cert: readFileSync(projRoot + 'dev-keys/localhost-cert.pem'),
-				key: readFileSync(projRoot + 'dev-keys/localhost-privkey.pem'),
+				cert: readFileSync(sslCert || sslKeyPath + 'cert.pem'),
+				key: readFileSync(sslPrivkey || sslKeyPath + 'privkey.pem'),
 		  },
-} as ServerOptionsAsSecureHttp2);
+} as ServerOptionsAsHttp2 | ServerOptionsAsSecureHttp2);
 
-if (!isProxied) {
+if (!proxied) {
 	app.register(fastifyCompress, { global: true });
 }
 
 app.register(fastifyStatic, {
-	root: projRoot + '/public/',
+	root: resolve(staticFolder),
 	redirect: true,
 	immutable: true,
-	maxAge: 24 * HOUR, // in milliseconds
+	maxAge: ttl_static * 1000, // fastifyStatic uses milliseconds
 	index: 'index.txt',
 	// lastModified: false,
 	etag: false, // Auto-generated from the file's modification date.
@@ -42,7 +47,6 @@ app.register(fastifyStatic, {
 app.setNotFoundHandler((req, res) => {
 	res.sendFile('_NotFound_.txt');
 });
-
 app.setErrorHandler((err, req, res) => {
 	console.error(err);
 	res.sendFile('_Error_.txt');
