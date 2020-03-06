@@ -4,7 +4,7 @@ const del = require('del');
 const writeFile = require('fs').writeFileSync;
 
 const distFolder = 'dist/';
-const testsFolder = '__tests/';
+const testsFolder = 'testing/__tests/';
 
 // ===========================================================================
 

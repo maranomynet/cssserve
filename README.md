@@ -12,7 +12,7 @@ Example request:
 ```html
 <link
 	rel="stylesheet"
-	href="https://css.server/bundle/v1?_base,Module-B,Module-A"
+	href="https://css.server/bundle/v1?m=_base,Module-B,Module-A"
 />
 ```
 
@@ -20,20 +20,20 @@ Example response (with comments):
 
 ```css
 /* "_base" from query-string */
-@import '/css/1.7/_base.css';
+@import '/css/v1.7/_base.css';
 /* Dependencies of Module-A.css and Module-B.css */
-@import '/css/1.7/Button.css';
-@import '/css/1.7/Carousel.css';
-@import '/css/1.7/Herobanner.css';
-@import '/css/1.7/Tabs.css';
+@import '/css/v1.7/Button.css';
+@import '/css/v1.7/Carousel.css';
+@import '/css/v1.7/Herobanner.css';
+@import '/css/v1.7/Tabs.css';
 /* "Module-A" from query-string */
-@import '/css/1.7/Module-A.css';
+@import '/css/v1.7/Module-A.css';
 /* Unique dependencies of Module-B.css */
-@import '/css/1.7/FormInput.css';
-@import '/css/1.7/Selectbox.css';
-@import '/css/1.7/BasicTable.css';
+@import '/css/v1.7/FormInput.css';
+@import '/css/v1.7/Selectbox.css';
+@import '/css/v1.7/BasicTable.css';
 /* "Module-B" from query-string */
-@import '/css/1.7/Module-B.css';
+@import '/css/v1.7/Module-B.css';
 ```
 
 Example of how `Module-A.css` might declare its dependencies:

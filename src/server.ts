@@ -3,9 +3,9 @@ import fastify, { ServerOptionsAsHttp2, ServerOptionsAsSecureHttp2 } from 'fasti
 import fastifyCompress from 'fastify-compress';
 import fastifyStatic from 'fastify-static';
 import { readFileSync } from 'fs';
-import { resolve } from 'path';
 import cssBundler from './cssBundler';
 import config from './config';
+import { resolve } from 'path';
 
 const {
 	port,
@@ -17,7 +17,7 @@ const {
 	ttl_static,
 } = config;
 
-const sslKeyPath = config.sslKeyPath || __dirname + '/default-keys/';
+const sslKeyPath = config.sslKeyPath || __dirname + '/../default-keys/';
 
 const app = fastify({
 	http2: true,
@@ -47,10 +47,10 @@ app.register(fastifyStatic, {
 app.setNotFoundHandler((req, res) => {
 	res.sendFile('_NotFound_.txt');
 });
-app.setErrorHandler((err, req, res) => {
-	console.error(err);
-	res.sendFile('_Error_.txt');
-});
+// app.setErrorHandler((err, req, res) => {
+// 	console.error('ERROR HANDLER:\n', err);
+// 	res.send(JSON.stringify(err, null, 4));
+// });
 
 app.get('/bundle/:version', cssBundler);
 
