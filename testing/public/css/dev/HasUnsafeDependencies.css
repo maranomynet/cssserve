@@ -1,0 +1,8 @@
+/*!@deps
+	../dev/Input
+	../../_EVÍL$_/Http404
+	Button
+*/
+.HasUnsafeDependencies {
+	color: red;
+}

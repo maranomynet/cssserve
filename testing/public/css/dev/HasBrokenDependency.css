@@ -1,0 +1,7 @@
+/*!@deps
+	Button
+	Http404
+*/
+.HasBrokenDependency {
+	color: red;
+}

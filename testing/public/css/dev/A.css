@@ -1,0 +1,7 @@
+/* testing circual dependencies: A->B, B->A */
+/*!@deps
+	B
+*/
+.A {
+	color: red;
+}
