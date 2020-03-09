@@ -1,7 +1,7 @@
 import { existsSync, exists, readFileSync } from 'fs';
 import { sync as glob } from 'glob';
 
-type QueryObj = Record<string, string | Array<string> | undefined>;
+type QueryObj = Readonly<Record<string, string | ReadonlyArray<string> | undefined>>;
 
 // ---------------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ export const resolveCssVersionFolder = (
 					const idx = a.findIndex((_, i) => a[i] !== b[i]);
 					return (a[idx] || 0) > (b[idx] || 0) ? 1 : -1;
 				})
-				.pop() as Array<number>;
+				.pop() as ReadonlyArray<number>;
 			if (topPointVersion) {
 				const pointVersionSuffix = topPointVersion.join('.').replace(/\.+$/, '');
 				return 'css/' + versionParam + '.' + pointVersionSuffix + '/';
@@ -129,10 +129,10 @@ const isInvalidModuleForFolder = (sourceFolder: string) => (moduleName: string) 
 };
 
 const findFirstError = (
-	modules: Array<string>,
+	modules: ReadonlyArray<string>,
 	isInvalidModule: ReturnType<typeof isInvalidModuleForFolder>
 ) => {
-	let moduleError: undefined | NonExistentModuleError | UsafeModuleTokenError;
+	let moduleError: undefined | NonExistentModuleError | UnsafeModuleTokenError;
 	modules.forEach((moduleName) => {
 		moduleError = moduleError || isInvalidModule(moduleName);
 	});
@@ -143,7 +143,7 @@ export type ParsedModules = Array<string | { ignored: string }>;
 
 export const parseModules = (
 	sourceFolder: string,
-	modules: Array<string>
+	modules: ReadonlyArray<string>
 ): Promise<ParsedModules> =>
 	new Promise((resolve, reject) => {
 		const isInvalidModule = isInvalidModuleForFolder(sourceFolder);
