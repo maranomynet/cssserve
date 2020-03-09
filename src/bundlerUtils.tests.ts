@@ -229,13 +229,13 @@ o.spec('parseModules', () => {
 						// @ts-ignore
 						o(modules).equals('should have cast an error');
 					})
-					.catch((err: NonExistentModuleError | UsafeModuleTokenError) => {
+					.catch((err) => {
 						if ('notFound' in test.error) {
 							o(err instanceof NonExistentModuleError).equals(true);
-							o(err.moduleName).equals(test.error.notFound);
+							o((err as NonExistentModuleError).moduleName).equals(test.error.notFound);
 						} else {
-							o(err instanceof UsafeModuleTokenError).equals(true);
-							o(err.moduleName).equals(test.error.invalid);
+							o(err instanceof UnsafeModuleTokenError).equals(true);
+							o((err as UsafeModuleTokenError).moduleName).equals(test.error.invalid);
 						}
 					})
 					.finally(done);
