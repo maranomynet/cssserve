@@ -9,7 +9,7 @@ import {
 	makeCssFromModuleNames,
 	ParsedModules,
 	NonExistentModuleError,
-	UsafeModuleTokenError,
+	UnsafeModuleTokenError,
 } from './bundlerUtils';
 
 const staticFolder = 'testing/public/';
@@ -235,7 +235,7 @@ o.spec('parseModules', () => {
 							o((err as NonExistentModuleError).moduleName).equals(test.error.notFound);
 						} else {
 							o(err instanceof UnsafeModuleTokenError).equals(true);
-							o((err as UsafeModuleTokenError).moduleName).equals(test.error.invalid);
+							o((err as UnsafeModuleTokenError).moduleName).equals(test.error.invalid);
 						}
 					})
 					.finally(done);
