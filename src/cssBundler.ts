@@ -4,6 +4,7 @@ import {
 	resolveCssVersionFolder,
 	parseModules,
 	makeCssFromModuleNames,
+	makeLinkHeaderValue,
 } from './bundlerUtils';
 import config from './config';
 
@@ -30,6 +31,10 @@ const cssBundler: RequestHandler = (req, res) => {
 	return parseModules(staticFolder + versionFolder, modules).then((modules) => {
 		const css = makeCssFromModuleNames(versionFolder, modules);
 		// TODO: Save to Cache
+
+		res.headers({
+			Link: makeLinkHeaderValue(versionFolder, modules),
+		});
 		res.status(200).send(css);
 	});
 };
