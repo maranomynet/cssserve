@@ -1,4 +1,4 @@
-import { existsSync, exists, readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { sync as glob } from 'glob';
 
 type QueryObj = Readonly<Record<string, string | ReadonlyArray<string> | undefined>>;
@@ -172,7 +172,10 @@ export const parseModules = (
 
 // ---------------------------------------------------------------------------
 
-export const makeCssFromModuleNames = (versionFolder: string, modules: ParsedModules) =>
+export const makeCssFromModuleNames = (
+	versionFolder: string,
+	modules: ParsedModules
+): string =>
 	modules
 		.map((moduleName) =>
 			typeof moduleName === 'string'
