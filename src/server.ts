@@ -7,6 +7,9 @@ import cssBundler from './cssBundler';
 import config from './config';
 import { resolve } from 'path';
 
+const isProd = process.env.NODE_ENV === 'production';
+const isDebug = process.env.NODE_ENV === 'debug';
+
 const {
 	port,
 	staticFolder,
@@ -47,10 +50,11 @@ app.register(fastifyStatic, {
 app.setNotFoundHandler((req, res) => {
 	res.sendFile('_NotFound_.txt');
 });
-// app.setErrorHandler((err, req, res) => {
-// 	console.error('ERROR HANDLER:\n', err);
-// 	res.send(JSON.stringify(err, null, 4));
-// });
+app.setErrorHandler((err, req, res) => {
+	!isProd && console.error('ERROR:\n  ', err.message);
+	isDebug && console.error(err);
+	res.send('ERROR\n' + err.message);
+});
 
 app.get('/bundle/:version', cssBundler);
 
