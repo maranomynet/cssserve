@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'fs';
 import { sync as glob } from 'glob';
+import { onCacheRefresh } from './cacheRefresher';
 
 type QueryObj = Readonly<Record<string, string | ReadonlyArray<string> | undefined>>;
 
@@ -48,38 +49,73 @@ export const getModuleListFromQuery = (query: QueryObj) => {
 };
 // ---------------------------------------------------------------------------
 
+export const getAllValidCssVersions = (staticFolder: string): Record<string, string> => {
+	const versions: Record<string, string> = {};
+	const cssFolder = staticFolder + 'css/';
+	const versionFolders = glob('*/', { cwd: cssFolder })
+		// chop trailing "/" off directoryNames
+		.map((dirName) => dirName.slice(0, -1));
+
+	versionFolders.forEach((name) => {
+		const superVersions = name
+			.split('.')
+			.slice(0, -1)
+			.reduce<Array<string>>(
+				(superVersions, token, i, arr) =>
+					superVersions.concat([arr.slice(0, i + 1).join('.')]),
+				[]
+			);
+		superVersions.forEach((superVersion) => {
+			if (!versions[superVersion]) {
+				const cutIdx = superVersion.length + 1;
+				const topPointVersion = versionFolders
+					.filter((subName) => subName.startsWith(superVersion + '.'))
+					.map((subName) => subName.slice(cutIdx))
+					.filter((minorVersionSuffix) => !/[^0-9.]/.test(minorVersionSuffix))
+					.map((minorVersionSuffix) => {
+						const arr = minorVersionSuffix.split('.').map((bit) => parseInt(bit));
+						arr.length = 4; // Normalize the length for saner sort.
+						return arr;
+					})
+					.sort((a, b) => {
+						const idx = a.findIndex((_, i) => a[i] !== b[i]);
+						return (a[idx] || 0) > (b[idx] || 0) ? 1 : -1;
+					})
+					.pop() as ReadonlyArray<number>;
+				if (topPointVersion) {
+					const pointVersionSuffix = topPointVersion.join('.').replace(/\.+$/, '');
+					versions[superVersion] = 'css/' + superVersion + '.' + pointVersionSuffix + '/';
+				}
+			}
+		});
+
+		versionFolders.filter((fname) => fname.startsWith(name + '.'));
+	});
+	versionFolders.forEach((name) => {
+		versions[name] = versions[name] || 'css/' + name + '/';
+	});
+	return versions;
+};
+
+// ---------------------------------------------------------------------------
+
+let _validVersions: Record<string, Record<string, string>> = {};
+onCacheRefresh(() => {
+	_validVersions = {};
+});
+
 export const resolveCssVersionFolder = (
 	staticFolder: string,
 	versionParam: string | undefined
 ): string | null => {
-	if (versionParam && isSafeToken(versionParam)) {
-		const cssFolder = staticFolder + 'css/';
-		if (existsSync(cssFolder + versionParam)) {
-			return 'css/' + versionParam + '/';
-		}
-		const versionFolders = glob(versionParam + '.*', { cwd: cssFolder });
-		if (versionFolders.length) {
-			const cutIdx = versionParam.length + 1;
-			const topPointVersion = versionFolders
-				.map((versionFolderName) => versionFolderName.slice(cutIdx))
-				.filter((name) => !/[^0-9.]/.test(name))
-				.map((minorVersionSuffix) => {
-					const arr = minorVersionSuffix.split('.').map((bit) => parseInt(bit));
-					arr.length = 4; // Normalize the length for saner sort.
-					return arr;
-				})
-				.sort((a, b) => {
-					const idx = a.findIndex((_, i) => a[i] !== b[i]);
-					return (a[idx] || 0) > (b[idx] || 0) ? 1 : -1;
-				})
-				.pop() as ReadonlyArray<number>;
-			if (topPointVersion) {
-				const pointVersionSuffix = topPointVersion.join('.').replace(/\.+$/, '');
-				return 'css/' + versionParam + '.' + pointVersionSuffix + '/';
-			}
-		}
+	if (!versionParam || !isSafeToken(versionParam)) {
+		return null;
 	}
-	return null;
+	let versions = _validVersions[staticFolder];
+	if (!versions) {
+		versions = _validVersions[staticFolder] = getAllValidCssVersions(staticFolder);
+	}
+	return versions[versionParam] || null;
 };
 
 // ---------------------------------------------------------------------------
@@ -139,6 +175,20 @@ const findFirstError = (
 	return moduleError;
 };
 
+let _depsCache: Partial<Record<string, Array<string>>> = {};
+onCacheRefresh(() => {
+	_depsCache = {};
+});
+const getDepsFor = (file: string) => {
+	let deps = _depsCache[file];
+	if (!deps) {
+		const css = readFileSync(file, 'utf8');
+		deps = parseDepsFromCSS(css).sort(lowercaseFirstCompare);
+		_depsCache[file] = deps;
+	}
+	return deps;
+};
+
 export type ParsedModules = Array<string | { ignored: string }>;
 
 export const parseModules = (
@@ -162,8 +212,7 @@ export const parseModules = (
 				return list.concat({ ignored: moduleName });
 			}
 			found[moduleName] = true;
-			const css = readFileSync(sourceFolder + moduleName + '.css', 'utf8');
-			const deps = parseDepsFromCSS(css).sort(lowercaseFirstCompare);
+			const deps = getDepsFor(sourceFolder + moduleName + '.css');
 			return deps.reduce(parseDepsTree, list).concat([moduleName]);
 		};
 		modules = modules.slice(0).sort(lowercaseFirstCompare);

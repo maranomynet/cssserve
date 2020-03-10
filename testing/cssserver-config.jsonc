@@ -1,0 +1,12 @@
+{
+	// "port": 4000,
+	"staticFolder": "testing/public/",
+	// "ttl_static": 86400,
+	// "ttl_bundle": 3600,
+	"cacheRefreshToken": "refreshCache"
+	// "cache": true,
+	// "proxied": false,
+	// "sslKeyPath": null,
+	// "sslCert": null,
+	// "sslPrivkey": null,
+}
