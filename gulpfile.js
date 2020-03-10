@@ -75,7 +75,10 @@ const makePackageJson = (done) => {
 	done();
 };
 
-const copyDocs = () => src(['README.md', 'CHANGELOG.md']).pipe(dest(distFolder));
+const copyDocs = () =>
+	src(['README.md', 'CHANGELOG.md', 'default-keys/*'], { base: '.' }).pipe(
+		dest(distFolder)
+	);
 
 // ===========================================================================
 

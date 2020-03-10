@@ -1,6 +1,7 @@
 {
 	"staticFolder": "testing/public/",
 	"cacheRefreshToken": "refreshCache",
+	"sslKeyPath": "default-keys/",
 	"// ------------------------------ ": {},
 	"// Default values (for reference) ": {
 		"port": 4000,

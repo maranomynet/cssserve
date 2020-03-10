@@ -20,7 +20,7 @@ const {
 	ttl_static,
 } = config;
 
-const sslKeyPath = config.sslKeyPath || __dirname + '/../default-keys/';
+const sslKeyPath = config.sslKeyPath || __dirname + '/default-keys/';
 
 const app = fastify({
 	http2: true,
