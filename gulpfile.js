@@ -26,6 +26,7 @@ const [scriptsBundle, scriptsWatch] = rollupTaskFactory({
 	...baseOpts,
 	name: 'build_server',
 	glob: ['server.ts'],
+	NODE_ENV: undefined,
 	// glob: ['**/*.ts', '!**/*{tests,privates,WIP}.ts', '!__testing/**/*.ts'];,
 	dist: distFolder,
 });
