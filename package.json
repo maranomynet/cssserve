@@ -1,6 +1,6 @@
 {
 	"name": "@hugsmidjan_is/cssserver",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"dist_package_json": {
 		"bin": {
 			"cssserver": "server.js"
