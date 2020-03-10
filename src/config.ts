@@ -1,6 +1,6 @@
 import rc from 'rc';
 import { name as pkgName } from '../package.json';
-import { AppConfig } from './types.AppConfig';
+import { AppConfig } from './AppConfig';
 
 const appName = pkgName.split('/').pop() as string;
 const HOUR = 60 * 60;

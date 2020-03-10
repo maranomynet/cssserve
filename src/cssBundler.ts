@@ -1,14 +1,12 @@
 import { RequestHandler, FastifyRequest } from 'fastify';
-import {
-	getModuleListFromQuery,
-	resolveCssVersionFolder,
-	parseModules,
-	makeCssFromModuleNames,
-	makeLinkHeaderValue,
-} from './bundlerUtils';
-import config from './config';
-import LRUCache from 'lru-cache';
+import resolveCssVersionFolder from './resolveCssVersionFolder';
+import parseModules from './parseModules';
 import { refreshCache, onCacheRefresh } from './cacheRefresher';
+import getModuleListFromQuery from './getModuleListFromQuery';
+import makeLinkHeaderValue from './makeLinkHeaderValue';
+import makeCssFromModuleNames from './makeCssFromModuleNames';
+import LRUCache from 'lru-cache';
+import config from './config';
 
 const { ttl_bundle, staticFolder, cacheRefreshToken } = config;
 

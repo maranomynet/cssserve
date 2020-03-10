@@ -21,7 +21,7 @@
 		"dev": "gulp dev",
 		"test": "ospec 'testing/__tests/**/*.tests.js'",
 		"dev:test": "yarn run test  &&  onchange 'testing/__tests/**/*.tests.js' -f add,change -- ospec {{changed}}",
-		"dev:server": "node dist/server --config testing/cssserver-config.jsonc"
+		"dev:server": "node dist/server --config testing/cssserver-config.json"
 	},
 	"dependencies": {
 		"compression": "^1.7.4",
