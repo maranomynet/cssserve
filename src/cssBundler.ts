@@ -50,7 +50,7 @@ const getCssBundle = (req: FastifyRequest): Promise<BundleData> =>
 		if (cachedBundle) {
 			return cachedBundle;
 		}
-		const versionParam = (req.params.version || '')
+		const versionParam = ((req.params.version as string) || '')
 			// tolerate trailing slash
 			.replace(/\/$/, '');
 
@@ -84,7 +84,6 @@ const getCssBundle = (req: FastifyRequest): Promise<BundleData> =>
 				css,
 				linkHeader,
 			};
-			console.log('bundling');
 
 			bundleCache.set(url, bundle);
 			bundleCache.set(normalizedTokens, bundle);
