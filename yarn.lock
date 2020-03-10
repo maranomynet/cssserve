@@ -23,12 +23,13 @@
   resolved "https://registry.yarnpkg.com/@blakeembrey/deque/-/deque-1.0.5.tgz#f4fa17fc5ee18317ec01a763d355782c7b395eaf"
   integrity sha512-6xnwtvp9DY1EINIKdTfvfeAtCYw4OqBZJhtiqkT3ivjnEfa25VQ3TsKvaFfKm8MyGIEfE95qLe+bNEt3nB0Ylg==
 
-"@hugsmidjan/gulp-rollup@^0.3.19":
-  version "0.3.19"
-  resolved "https://registry.yarnpkg.com/@hugsmidjan/gulp-rollup/-/gulp-rollup-0.3.19.tgz#bbcbcbb62dc66de1f1555c04301dd1c97e90b905"
-  integrity sha512-DCAbPcbPGbhGLYZzUdblzg3oblou22hViNDgnj2e5R7FZi1B0VtB5v8N1T7b1VUm0ORz3CR9B3t/xSxIR3Je2g==
+"@hugsmidjan/gulp-rollup@^0.3.22":
+  version "0.3.22"
+  resolved "https://registry.yarnpkg.com/@hugsmidjan/gulp-rollup/-/gulp-rollup-0.3.22.tgz#82e45f5da8203e0a4e03366b23745a24fecea740"
+  integrity sha512-BPMuGctGLCP5WR62Xa9BhFUaKdOj4Qm2jPP/2mqgENhFo24OiTjSNcpdHqvoPS5KCPLQ/vk/nPQNw1hbXZD3Tg==
   dependencies:
     "@hugsmidjan/gulp-utils" "^0.1.3"
+    "@rollup/plugin-alias" "^3.0.1"
     "@rollup/plugin-buble" "^0.20.0"
     "@rollup/plugin-commonjs" "^11.0.2"
     "@rollup/plugin-json" "^4.0.2"
@@ -36,6 +37,7 @@
     "@rollup/plugin-replace" "^2.2.0"
     glob "^7.1.6"
     rollup "^1.31.1"
+    rollup-plugin-preserve-shebangs "^0.1.2"
     rollup-plugin-terser "^5.1.2"
     rollup-plugin-typescript2 "^0.26.0"
 
@@ -53,11 +55,6 @@
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@hugsmidjan/hxmstyle/-/hxmstyle-2.4.0.tgz#9b20b191cb8da59e4e5214b25fd43e6198927af6"
   integrity sha512-QDHMVAM4T0nX6d0IPya9CH6/e3XShgEYg5MZ7COxwas5psq5ird/bCmVUeRqTws2Ytv5faEcNwLoEor7aND82A==
-
-"@hugsmidjan_is/qj@^3.5.0":
-  version "3.5.0"
-  resolved "https://nexus.hugsmidjan.is/repository/hxm-npm/@hugsmidjan_is/qj/-/qj-3.5.0.tgz#31200a6bf3112ba0064132240c071d93a778bd98"
-  integrity sha512-lDaoNqx6vhc1H8FqAgEQpstK5VylzNw4+xY6TGtgh0mBtC+0EMcZguAZXolMvGQ/2lhzsSyqpxC7j8uuDQ5Plw==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
@@ -79,6 +76,13 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
+
+"@rollup/plugin-alias@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-alias/-/plugin-alias-3.0.1.tgz#eb0549da7177a09e2d6d9d852e4cc5058f3e2104"
+  integrity sha512-ReSy6iPl3GsWLMNeshXAfgItZFMoMOTYC7MZQQM5va4pqxiGgwl1xZUZfHW6zGyZPK+k8TBadxx+kdmepiUa+g==
+  dependencies:
+    slash "^3.0.0"
 
 "@rollup/plugin-buble@^0.20.0":
   version "0.20.0"
@@ -3633,6 +3637,11 @@ rimraf@^3.0.0:
   integrity sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
   dependencies:
     glob "^7.1.3"
+
+rollup-plugin-preserve-shebangs@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-preserve-shebangs/-/rollup-plugin-preserve-shebangs-0.1.2.tgz#f80aacb7726dc4a57ccf365001ea0c31fb82d6f3"
+  integrity sha512-7683RR5AkyN2Ftg8qUZw9v25th46vJsEjgIW7g1rRSno9CEfXy8IQ03wV+tXwDAl5DBbHHYIzn3T/wc/l8FD1w==
 
 rollup-plugin-terser@^5.1.2:
   version "5.2.0"

@@ -36,7 +36,7 @@
 		"@hugsmidjan_is/qj": "^3.5.0"
 	},
 	"devDependencies": {
-		"@hugsmidjan/gulp-rollup": "^0.3.19",
+		"@hugsmidjan/gulp-rollup": "^0.3.22",
 		"@hugsmidjan/hxmstyle": "^2.4.0",
 		"@types/compression": "^1.7.0",
 		"@types/lru-cache": "^5.1.0",

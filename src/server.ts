@@ -1,4 +1,4 @@
-// #!/usr/bin/env node
+#!/usr/bin/env node
 import fastify, { ServerOptionsAsHttp2, ServerOptionsAsSecureHttp2 } from 'fastify';
 import fastifyCompress from 'fastify-compress';
 import fastifyStatic from 'fastify-static';
