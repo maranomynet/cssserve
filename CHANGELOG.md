@@ -3,9 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
-
-## 1.0.0
-
-_2020-XX-XX_
-
+- docs: Document the CLI interface and bundling behaviour
+- feat: Bundle CSS correctly and efficiently
+- feat: Serve static CSS efficiently
 - chore: Initial scaffolding
