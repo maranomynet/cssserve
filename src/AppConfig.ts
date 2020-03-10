@@ -3,7 +3,7 @@ export interface AppConfig {
 	 *
 	 * Port number that the CSS server runs on
 	 *
-	 * Default: `process.env.NODE_PORT || process.env.PORT || 4000`
+	 * Default: `4000`
 	 */
 	port: number;
 
@@ -39,7 +39,7 @@ export interface AppConfig {
 	 *
 	 * Default: `undefined`
 	 */
-	cacheRefreshToken?: string;
+	cacheRefreshToken?: string | null;
 
 	/**
 	 * Disable internal caching (Useful during rapid CSS development)
@@ -52,7 +52,7 @@ export interface AppConfig {
 	 * Is the server proxied behind another server/proxy
 	 * that provides **SSL and compression**?
 	 *
-	 * Default: `process.env.PROXIED === "true" || false`
+	 * Default: `false`
 	 */
 	proxied: boolean;
 
