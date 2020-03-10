@@ -73,18 +73,22 @@ const parseModules = (
 ): Promise<ParsedModules> =>
 	new Promise((resolve, reject) => {
 		const isInvalidModule = isInvalidModuleForFolder(sourceFolder);
+
 		// Check if the top-level modules coming from the URL are safe and sane
 		const moduleError = findFirstError(modules, isInvalidModule);
 		if (moduleError) {
 			reject(moduleError);
 			return;
 		}
+
 		const found: Partial<Record<string, true>> = {};
 		let contextFile: string | undefined;
+
 		const parseDepsTree = (list: ParsedModules, moduleName: string): ParsedModules => {
 			if (found[moduleName]) {
 				return list;
 			}
+
 			if (isInvalidModule(moduleName)) {
 				if (isDev) {
 					console.info(
@@ -97,12 +101,16 @@ const parseModules = (
 				}
 				return list.concat({ ignored: moduleName });
 			}
+
 			found[moduleName] = true;
 			contextFile = sourceFolder + moduleName + '.css';
 			const deps = getDepsFor(contextFile);
+
 			return deps.reduce(parseDepsTree, list).concat([moduleName]);
 		};
+
 		modules = modules.slice(0).sort(lowercaseFirstCompare);
+
 		resolve(modules.reduce(parseDepsTree, []));
 	});
 
