@@ -23,6 +23,7 @@ interface BundleData {
 
 let bundleCache: LRUCache<string, BundleData>;
 let lastModified: number;
+
 const makeBundleCache = () => {
 	bundleCache = new LRUCache<string, BundleData>({
 		// With maxAge `undefined` means infinite cache-lifetime,
@@ -110,6 +111,7 @@ const cssBundler: RequestHandler = (req, res) => {
 		res.headers({
 			Link: linkHeader,
 			ETag: lastModified,
+			'Content-Type': 'text/css; charset=UTF-8',
 			'Cache-Control': CACHE_CONTROL_VALUE,
 		});
 		res.status(200);
