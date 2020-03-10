@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"dist_package_json": {
 		"bin": {
-			"hxmstyle": "server.js"
+			"cssserver": "server.js"
 		},
 		"scripts": {}
 	},
