@@ -1,4 +1,5 @@
-import eventify from '@hugsmidjan_is/qj/eventify';
+// import eventify from '@hugsmidjan_is/qj/eventify';
+import eventify from './qj/eventify';
 
 const { on, emit } = eventify({});
 

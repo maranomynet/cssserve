@@ -32,10 +32,12 @@
 		"lru-cache": "^5.1.1",
 		"rc": "^1.2.8"
 	},
+	"__devDependencies": {
+		"@hugsmidjan_is/qj": "^3.5.0"
+	},
 	"devDependencies": {
 		"@hugsmidjan/gulp-rollup": "^0.3.19",
 		"@hugsmidjan/hxmstyle": "^2.4.0",
-		"@hugsmidjan_is/qj": "^3.5.0",
 		"@types/compression": "^1.7.0",
 		"@types/lru-cache": "^5.1.0",
 		"@types/node": "^12",
