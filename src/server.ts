@@ -6,9 +6,7 @@ import { readFileSync } from 'fs';
 import cssBundler from './cssBundler';
 import config from './config';
 import { resolve } from 'path';
-
-const isProd = process.env.NODE_ENV === 'production';
-const isDebug = process.env.NODE_ENV === 'debug';
+import { isProd, isDebug } from './env';
 
 const {
 	port,

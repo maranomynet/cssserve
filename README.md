@@ -7,6 +7,7 @@ files.
 
 - [How to run it](#how-to-run-it)
 - [Configuration](#configuration)
+- [Log-levels](#log-levels)
 - [What it serves](#what-it-serves)
 	- [Example request:](#example-request)
 
@@ -33,6 +34,16 @@ CLI arguments and a `--config file` option as well.
 
 Additionally the `port` option can be overridden via the environment variables
 `NODE_PORT` and/or `PORT`.
+
+## Log-levels
+
+Logging is controlled by the `NODE_ENV` variable.
+
+- `NODE_ENV=production` logs nothing much
+- `NODE_ENV=development` logs server `500` errors and info about _all invalid
+  token names_ found while parsing CSS files.
+- `NODE_ENV=debug` same as `development`, but adds detailed stacktrace for all
+  thrown errors
 
 ## What it serves
 

@@ -3,6 +3,7 @@ import { onCacheRefresh } from './cacheRefresher';
 import lowercaseFirstCompare from './lowercaseFirstCompare';
 import parseDepsFromCSS from './parseDepsFromCSS';
 import isSafeToken from './isSafeToken';
+import { isDev } from './env';
 
 export class ModuleError extends Error {
 	__proto__: Error; // TS Extend native type Workaround (https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work)
@@ -79,15 +80,26 @@ const parseModules = (
 			return;
 		}
 		const found: Partial<Record<string, true>> = {};
+		let contextFile: string | undefined;
 		const parseDepsTree = (list: ParsedModules, moduleName: string): ParsedModules => {
 			if (found[moduleName]) {
 				return list;
 			}
 			if (isInvalidModule(moduleName)) {
+				if (isDev) {
+					console.info(
+						'NOTE:' +
+							'\n  Invalid @deps token ' +
+							JSON.stringify(moduleName) +
+							'\n  in file ' +
+							contextFile
+					);
+				}
 				return list.concat({ ignored: moduleName });
 			}
 			found[moduleName] = true;
-			const deps = getDepsFor(sourceFolder + moduleName + '.css');
+			contextFile = sourceFolder + moduleName + '.css';
+			const deps = getDepsFor(contextFile);
 			return deps.reduce(parseDepsTree, list).concat([moduleName]);
 		};
 		modules = modules.slice(0).sort(lowercaseFirstCompare);
