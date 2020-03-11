@@ -1,6 +1,6 @@
 import o from 'ospec';
 import makeCssFromModuleNames from './makeCssFromModuleNames';
-import { ParsedModules } from './parseModules';
+import { ParsedModules } from './types';
 
 const outputA = `
 @import "/css/v1/C.css";

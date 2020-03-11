@@ -1,4 +1,4 @@
-import { ParsedModules } from './parseModules';
+import { ParsedModules } from './types';
 
 const makeLinkHeaderValue = (
 	versionFolder: string,

@@ -1,6 +1,6 @@
 import o from 'ospec';
 import makeLinkHeaderValue from './makeLinkHeaderValue';
-import { ParsedModules } from './parseModules';
+import { ParsedModules } from './types';
 
 // ---------------------------------------------------------------------------
 
