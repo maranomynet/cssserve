@@ -23,7 +23,7 @@ const sslKeyPath = config.sslKeyPath || __dirname + '/default-keys/';
 const app = fastify({
 	http2: true,
 	https: proxied
-		? undefined
+		? { allowHTTP1: true }
 		: {
 				allowHTTP1: true,
 				cert: readFileSync(sslCert || sslKeyPath + 'cert.pem'),

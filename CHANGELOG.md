@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- fix: Allow HTTP/1.1 in proxied mode
 
 ## 0.1.0 – 0.1.5
 
