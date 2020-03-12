@@ -3,6 +3,8 @@
 `cssserver` is a small dedicated HTTP/2 server that serves lots of small CSS
 files.
 
+---
+
 **Chapters:**
 
 - [How to run it](#how-to-run-it)
@@ -10,6 +12,9 @@ files.
 - [Log-levels](#log-levels)
 - [What it serves](#what-it-serves)
 	- [Example request:](#example-request)
+  [Example request:](#example-request)
+
+---
 
 ## How to run it
 
