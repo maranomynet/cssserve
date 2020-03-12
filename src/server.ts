@@ -20,16 +20,18 @@ const {
 
 const sslKeyPath = config.sslKeyPath || __dirname + '/default-keys/';
 
-const app = fastify({
-	http2: true,
-	https: proxied
-		? { allowHTTP1: true }
-		: {
-				allowHTTP1: true,
-				cert: readFileSync(sslCert || sslKeyPath + 'cert.pem'),
-				key: readFileSync(sslPrivkey || sslKeyPath + 'privkey.pem'),
-		  },
-} as ServerOptionsAsHttp2 | ServerOptionsAsSecureHttp2);
+const app = fastify(
+	proxied
+		? {}
+		: ({
+				http2: true,
+				https: {
+					allowHTTP1: true,
+					cert: readFileSync(sslCert || sslKeyPath + 'cert.pem'),
+					key: readFileSync(sslPrivkey || sslKeyPath + 'privkey.pem'),
+				},
+		  } as ServerOptionsAsHttp2 | ServerOptionsAsSecureHttp2)
+);
 
 if (!proxied) {
 	app.register(fastifyCompress, { global: true });
