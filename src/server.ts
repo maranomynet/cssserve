@@ -56,7 +56,7 @@ app.setErrorHandler((err, req, res) => {
 
 app.get('/bundle/:version', cssBundler);
 
-app.listen(port, (err) => {
+app.listen(port, '0.0.0.0', (err) => {
 	if (err) {
 		console.error(err);
 	} else {
