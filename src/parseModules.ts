@@ -8,7 +8,7 @@ import { ParsedModules, UnsafeModuleTokenError, NonExistentModuleError } from '.
 
 // ---------------------------------------------------------------------------
 
-const isInvalidModuleForFolder = (sourceFolder: string) => (moduleName: string) => {
+const makeModuleValidator = (sourceFolder: string) => (moduleName: string) => {
 	if (!isSafeToken(moduleName)) {
 		return new UnsafeModuleTokenError(moduleName);
 	} else if (!existsSync(sourceFolder + moduleName + '.css')) {
@@ -18,7 +18,7 @@ const isInvalidModuleForFolder = (sourceFolder: string) => (moduleName: string) 
 
 const findFirstError = (
 	modules: ReadonlyArray<string>,
-	isInvalidModule: ReturnType<typeof isInvalidModuleForFolder>
+	isInvalidModule: ReturnType<typeof makeModuleValidator>
 ) => {
 	let moduleError: undefined | NonExistentModuleError | UnsafeModuleTokenError;
 	modules.forEach((moduleName) => {
@@ -49,7 +49,7 @@ const parseModules = (
 	modules: ReadonlyArray<string>
 ): Promise<ParsedModules> =>
 	new Promise((resolve, reject) => {
-		const isInvalidModule = isInvalidModuleForFolder(sourceFolder);
+		const isInvalidModule = makeModuleValidator(sourceFolder);
 
 		// Check if the top-level modules coming from the URL are safe and sane
 		const moduleError = findFirstError(modules, isInvalidModule);
