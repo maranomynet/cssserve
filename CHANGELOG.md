@@ -3,12 +3,12 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
-- fix: Listen on all available interfaces
 
-## 0.1.6
+## 0.1.6 – 0.1.7
 
 _2020-03-12_
 
+- fix: Listen on all available interfaces
 - fix: Allow HTTP/1.1 in proxied mode
 
 ## 0.1.0 – 0.1.5
