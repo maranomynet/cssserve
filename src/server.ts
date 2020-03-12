@@ -60,6 +60,7 @@ app.listen(port, '0.0.0.0', (err) => {
 	if (err) {
 		console.error(err);
 	} else {
-		console.info('CSS server listening on https://localhost:' + port);
+		const protocol = proxied ? 'http' : 'https';
+		console.info('CSS server listening on ' + protocol + '://localhost:' + port);
 	}
 });
