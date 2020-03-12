@@ -109,7 +109,7 @@ Example response (with comments):
 @import '/css/v1.10/ModuleB.css';
 ```
 
-Example of how `ModuleA.css` might declare its dependencies:
+Example of how `ModuleA.css` declares its dependencies:
 
 ```css
 /*!@deps
