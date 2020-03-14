@@ -42,13 +42,12 @@ app.register(fastifyStatic, {
 	redirect: true,
 	immutable: true,
 	maxAge: ttl_static * 1000, // fastifyStatic uses milliseconds
-	index: 'index.txt',
 	// lastModified: false,
 	etag: false, // Auto-generated from the file's modification date.
 });
 
 app.setNotFoundHandler((req, res) => {
-	res.sendFile('_NotFound_.txt');
+	res.sendFile('_NotFound_.html');
 });
 app.setErrorHandler((err, req, res) => {
 	!isProd && console.error('ERROR:\n  ', err.message);
