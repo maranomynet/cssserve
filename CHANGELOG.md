@@ -3,6 +3,11 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 1.0.0
+
+_2020-03-14_
+
 - **BREAKING** feat: Un-scope `pkg.name` - prepare for open publishing
 - **BREAKING** feat: Change the `index.html` and `_NotFound_.html` server
   settings
