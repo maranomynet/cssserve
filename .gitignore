@@ -3,3 +3,4 @@
 /dist
 /testing/__tests
 /yarn-error.log
+/yarn.lock
