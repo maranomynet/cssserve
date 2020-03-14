@@ -8,7 +8,8 @@
 
 _2020-03-14_
 
-- **BREAKING** feat: Un-scope `pkg.name` - prepare for open publishing
+- **BREAKING** Rename + un-scope package as `cssserve`, prep for open
+  publication
 - **BREAKING** feat: Change the `index.html` and `_NotFound_.html` server
   settings
 
