@@ -1,17 +1,17 @@
 {
-	"name": "@hugsmidjan_is/cssserver",
+	"name": "cssserve",
 	"version": "0.1.8",
 	"dist_package_json": {
 		"bin": {
-			"cssserver": "server.js"
+			"cssserve": "server.js"
 		},
 		"scripts": {}
 	},
 	"engines": {
 		"node": "^12"
 	},
-	"private": true,
-	"license": "UNLICENCED",
+	"private": false,
+	"license": "MIT",
 	"scripts": {
 		"publishdist": "yarn run build  &&  npm publish dist",
 		"publishcanary": "yarn run build  &&  npm publish dist --tag canary",
@@ -21,7 +21,7 @@
 		"dev": "gulp dev",
 		"test": "ospec 'testing/__tests/**/*.tests.js'",
 		"dev:test": "yarn run test  &&  onchange 'testing/__tests/**/*.tests.js' -f add,change -- ospec {{changed}}",
-		"dev:server": "node dist/server --config testing/cssserver-config.json"
+		"dev:server": "node dist/server --config testing/cssserve-config.json"
 	},
 	"dependencies": {
 		"compression": "^1.7.4",

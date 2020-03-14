@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- **BREAKING** feat: Un-scope `pkg.name` - prepare for open publishing
 
 ## 0.1.6 – 0.1.8
 

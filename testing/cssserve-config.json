@@ -1,0 +1,5 @@
+{
+	"staticFolder": "testing/public/",
+	"cacheRefreshToken": "refreshCache",
+	"sslKeyPath": "default-keys/"
+}

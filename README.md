@@ -1,6 +1,6 @@
-# CSS Server
+# cssserve – CSS Server
 
-`cssserver` is a small dedicated HTTP/2 server that serves lots of small CSS
+`cssserve` is a small dedicated HTTP/2 server that serves lots of small CSS
 files.
 
 ---
@@ -19,21 +19,21 @@ files.
 ## How to run it
 
 ```sh
-npm install --save cssserver
-cssserver
+npm install --save cssserve
+cssserve
 ```
 
 ## Configuration
 
-`cssserver` is highly opinionated but accepts
+`cssserve` is highly opinionated but accepts
 [configuration options](src/AppConfig.ts), using the
 [`rc`](https://www.npmjs.com/package/rc) package.
 
 See the TypeScript [type definition for AppConfig](src/AppConfig.ts) for the
 available config values and defaults.
 
-The server looks for `.cssserverrc` in your package root (or its containing
-folders) and also accepts `CSSSERVER_*`-prefixed environment variables, direct
+The server looks for `.cssservec` in your package root (or its containing
+folders) and also accepts `CSSSERVE_*`-prefixed environment variables, direct
 CLI arguments and a `--config file` option as well.
 ([See more details](https://www.npmjs.com/package/rc#standards))
 

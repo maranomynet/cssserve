@@ -1,7 +1,7 @@
 import o from 'ospec';
 import parseModules from './parseModules';
 import { ParsedModules, NonExistentModuleError, UnsafeModuleTokenError } from './types';
-import { staticFolder } from '../testing/cssserver-config.json';
+import { staticFolder } from '../testing/cssserve-config.json';
 
 // ---------------------------------------------------------------------------
 

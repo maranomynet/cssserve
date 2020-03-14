@@ -1,5 +1,5 @@
 import o from 'ospec';
-import { staticFolder } from '../testing/cssserver-config.json';
+import { staticFolder } from '../testing/cssserve-config.json';
 import getAllValidCssVersions from './getAllValidCssVersions';
 
 // ---------------------------------------------------------------------------
