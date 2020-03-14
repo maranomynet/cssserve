@@ -74,5 +74,5 @@
 	"contributors": [
 		"Már Örlygsson <mar@hugsmidjan.is>"
 	],
-	"repository": "ssh://git@stash.hugsmidjan.is:7999/npm/rvk-css-server.git"
+	"repository": "git@github.com:hugsmidjan/cssserver.git"
 }
