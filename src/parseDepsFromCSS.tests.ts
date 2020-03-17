@@ -52,6 +52,15 @@ o.spec('parseDepsFromCSS', () => {
 			css: '/*!@Deps\n\tFoo\tBar\n*/body{color:red}',
 			expects: [],
 		},
+		// ------------------------
+		'No deps is ok': {
+			css: 'body{color:red}',
+			expects: [],
+		},
+		'Empty "@deps" is ok': {
+			css: '/*! @deps */body{color:red}',
+			expects: [],
+		},
 	};
 	Object.entries(tests).forEach(([name, test]) => {
 		o(name, () => {
