@@ -1,14 +1,21 @@
-const parseDepsFromCSS = (cssSource: string): Array<string> => {
+export type CssDepsList = Array<string> & { hasCSS: boolean };
+
+const parseDepsFromCSS = (cssSource: string): CssDepsList => {
 	// if (/\/\*!\s*@deps\s/.test(cssSource.slice(0, 1000))) {
-	const match = cssSource.match(/\/\*!\s*@deps\s([^*]+)\*\//);
+	const match = cssSource.match(/\/\*!\s*@deps(?:\s([^*]*))\*\//);
 	if (match) {
-		return match[1]
+		const deps = (match[1]
 			.replace(/\n|,|;/g, ' ')
 			.trim()
-			.split(/\s+/);
+			.split(/\s+/)
+			.filter((x) => x) as Array<string>) as CssDepsList;
+		deps.hasCSS = cssSource.replace(match[0], '').trim().length > 0;
+		return deps;
 	}
 	// }
-	return [];
+	const empty = ([] as Array<string>) as CssDepsList;
+	empty.hasCSS = cssSource.trim().length > 0;
+	return empty;
 };
 
 export default parseDepsFromCSS;

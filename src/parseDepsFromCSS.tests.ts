@@ -4,7 +4,14 @@ import parseDepsFromCSS from './parseDepsFromCSS';
 // ---------------------------------------------------------------------------
 
 o.spec('parseDepsFromCSS', () => {
-	const tests: Record<string, { css: string; expects: Array<string> }> = {
+	const tests: Record<
+		string,
+		{
+			css: string;
+			expects: Array<string>;
+			expects_hasCSS?: false;
+		}
+	> = {
 		'Declaration with each module on its own line': {
 			css: '/*!@deps\n\tFoo\tBar\n*/body{color:red}',
 			expects: ['Foo', 'Bar'],
@@ -18,16 +25,16 @@ o.spec('parseDepsFromCSS', () => {
 			expects: ['Foo', 'Bar'],
 		},
 		'Is OK with there not being any actual CSS': {
-			css: '\n\n/*!@deps\n\tFoo\tBar\n*/\n\n',
+			css: '\n\n/*!@deps\n\tFoo\tBar\n*/\n\nbody{color:red}',
 			expects: ['Foo', 'Bar'],
 		},
 		'Duplicate module names are purposefully allowed': {
-			css: '/*!@deps Foo,Bar,Foo,Foo,Bar*/',
+			css: '/*!@deps Foo,Bar,Foo,Foo,Bar*/body{color:red}',
 			expects: ['Foo', 'Bar', 'Foo', 'Foo', 'Bar'],
 		},
 		// NOTE: The parser views CSS files as a trusted source.
 		'Is purposefully agnostic about evil module names': {
-			css: '/*!@deps Fo/../o, ../Bar ${EVIL} */',
+			css: '/*!@deps Fo/../o, ../Bar ${EVIL} */body{color:red}',
 			expects: ['Fo/../o', '../Bar', '${EVIL}'],
 		},
 		// ------------------------
@@ -61,10 +68,28 @@ o.spec('parseDepsFromCSS', () => {
 			css: '/*! @deps */body{color:red}',
 			expects: [],
 		},
+		// ------------------------
+		'No content is detected': {
+			css: '\n\n  \n ',
+			expects: [],
+			expects_hasCSS: false,
+		},
+		'No significant content is detected': {
+			css: '\n /*! @deps */\n\n  \n ',
+			expects: [],
+			expects_hasCSS: false,
+		},
+		'No non-@deps content is detected': {
+			css: '/*! @deps Button */\n\n\n',
+			expects: ['Button'],
+			expects_hasCSS: false,
+		},
 	};
 	Object.entries(tests).forEach(([name, test]) => {
 		o(name, () => {
-			o(parseDepsFromCSS(test.css)).deepEquals(test.expects);
+			const output = parseDepsFromCSS(test.css);
+			o(output.slice(0)).deepEquals(test.expects);
+			o(output.hasCSS).equals(test.expects_hasCSS !== false);
 		});
 	});
 });

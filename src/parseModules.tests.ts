@@ -46,6 +46,15 @@ o.spec('parseModules', () => {
 			expected: ['B', 'A'],
 		},
 		// ---------------------
+		'suppresses empty module files': {
+			input: ['EmptyModule'],
+			expected: [],
+		},
+		'suppresses meta (@deps only) module files': {
+			input: ['MetaModule'],
+			expected: ['Button', 'Prompt', 'Input', 'Search'],
+		},
+		// ---------------------
 		'Throws for broken top-level module tokens that match no CSS file': {
 			input: ['Prompt', 'Button', 'Search', 'Http404'],
 			error: { notFound: 'Http404' },

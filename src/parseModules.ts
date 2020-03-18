@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'fs';
 import { onCacheRefresh } from './cacheRefresher';
 import lowercaseFirstCompare from './lowercaseFirstCompare';
-import parseDepsFromCSS from './parseDepsFromCSS';
+import parseDepsFromCSS, { CssDepsList } from './parseDepsFromCSS';
 import isSafeToken from './isSafeToken';
 import { isDev } from './env';
 import { ParsedModules, UnsafeModuleTokenError, NonExistentModuleError } from './types';
@@ -29,7 +29,7 @@ const findFirstError = (
 
 // ---------------------------------------------------------------------------
 
-let _depsCache: Partial<Record<string, Array<string>>> = {};
+let _depsCache: Partial<Record<string, CssDepsList>> = {};
 onCacheRefresh(() => {
 	_depsCache = {};
 });
@@ -83,7 +83,7 @@ const parseModules = (
 			contextFile = sourceFolder + moduleName + '.css';
 			const deps = getDepsFor(contextFile);
 
-			return deps.reduce(parseDepsTree, list).concat([moduleName]);
+			return deps.reduce(parseDepsTree, list).concat(deps.hasCSS ? [moduleName] : []);
 		};
 
 		modules = modules.slice(0).sort(lowercaseFirstCompare);
