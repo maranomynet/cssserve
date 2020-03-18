@@ -2,6 +2,7 @@
 import fastify, { ServerOptionsAsHttp2, ServerOptionsAsSecureHttp2 } from 'fastify';
 import fastifyCompress from 'fastify-compress';
 import fastifyStatic from 'fastify-static';
+import fastifyCors from 'fastify-cors';
 import { readFileSync } from 'fs';
 import cssBundler from './cssBundler';
 import config from './config';
@@ -36,6 +37,11 @@ const app = fastify(
 if (!proxied) {
 	app.register(fastifyCompress, { global: true });
 }
+
+app.register(fastifyCors, {
+	origin: true,
+	methods: ['GET'],
+});
 
 app.register(fastifyStatic, {
 	root: resolve(staticFolder),
