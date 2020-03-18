@@ -3,6 +3,11 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 1.0.1
+
+_2020-03-18_
+
 - fix: Allow cross origin requests for fonts
 
 ## 1.0.0
