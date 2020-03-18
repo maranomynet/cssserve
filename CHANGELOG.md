@@ -3,6 +3,11 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 1.1.0
+
+_2020-03-18_
+
 - feat: Bundler suppresses empty/meta module file tokens
 
 ## 1.0.1
