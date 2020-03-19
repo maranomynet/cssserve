@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- fix: Set `max-age=0` for non-cached bundles
 
 ## 1.1.0
 

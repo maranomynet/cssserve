@@ -10,9 +10,8 @@ import config from './config';
 
 const { ttl_bundle, staticFolder, cacheRefreshToken } = config;
 
-const CACHE_CONTROL_VALUE = ttl_bundle
-	? 'public, max-age=' + ttl_bundle + ', immutable'
-	: undefined;
+const CACHE_CONTROL_VALUE =
+	'public, max-age=' + ttl_bundle + (ttl_bundle ? ', immutable' : '');
 
 // ===========================================================================
 
