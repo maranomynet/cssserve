@@ -45,11 +45,12 @@ const retInvalidVersion = (versionParam: string) =>
 const getCssBundle = (req: FastifyRequest): Promise<BundleData> =>
 	Promise.resolve().then(() => {
 		const url = req.req.url as string;
-		let cachedBundle = bundleCache.get(url);
 
+		let cachedBundle = bundleCache.get(url);
 		if (cachedBundle) {
 			return cachedBundle;
 		}
+
 		const versionParam = ((req.params.version as string) || '')
 			// tolerate trailing slash
 			.replace(/\/$/, '');
@@ -64,15 +65,17 @@ const getCssBundle = (req: FastifyRequest): Promise<BundleData> =>
 		if (!versionFolder) {
 			return retInvalidVersion(versionParam);
 		}
-		const modules = getModuleListFromQuery(req.query);
 
+		const modules = getModuleListFromQuery(req.query);
 		if (modules.length === 0) {
 			return Promise.reject('No modules specified');
 		}
 
+		// Check if a cached result exists for the normalized version of the token list
 		const normalizedTokens = versionFolder + '|' + modules.join(',');
 		cachedBundle = bundleCache.get(normalizedTokens);
 		if (cachedBundle) {
+			// make the current url alias for the normalized token list
 			bundleCache.set(url, cachedBundle);
 			return cachedBundle;
 		}
