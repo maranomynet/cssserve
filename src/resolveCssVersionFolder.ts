@@ -1,6 +1,7 @@
 import isSafeToken from './isSafeToken';
 import getAllValidCssVersions from './getAllValidCssVersions';
 import { onCacheRefresh } from './cacheRefresher';
+import config from './config';
 
 let _validVersions: Record<string, Record<string, string>> = {};
 onCacheRefresh(() => {
@@ -14,7 +15,7 @@ const resolveCssVersionFolder = (
 	if (!versionParam || !isSafeToken(versionParam)) {
 		return null;
 	}
-	let versions = _validVersions[staticFolder];
+	let versions = config.cache && _validVersions[staticFolder];
 	if (!versions) {
 		versions = _validVersions[staticFolder] = getAllValidCssVersions(staticFolder);
 	}

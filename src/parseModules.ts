@@ -5,6 +5,7 @@ import parseDepsFromCSS, { CssDepsList } from './parseDepsFromCSS';
 import isSafeToken from './isSafeToken';
 import { isDev } from './env';
 import { ParsedModules, UnsafeModuleTokenError, NonExistentModuleError } from './types';
+import config from './config';
 
 // ---------------------------------------------------------------------------
 
@@ -35,7 +36,7 @@ onCacheRefresh(() => {
 });
 
 const getDepsFor = (file: string) => {
-	let deps = _depsCache[file];
+	let deps = config.cache && _depsCache[file];
 	if (!deps) {
 		const css = readFileSync(file, 'utf8');
 		deps = parseDepsFromCSS(css).sort(lowercaseFirstCompare);

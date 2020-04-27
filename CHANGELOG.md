@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- fix: Skip internal caches when `config.cache === false`
 - fix: Set `max-age=0` for non-cached bundles
 
 ## 1.1.0
