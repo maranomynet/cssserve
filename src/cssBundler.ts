@@ -7,6 +7,7 @@ import makeLinkHeaderValue from './makeLinkHeaderValue';
 import makeCssFromModuleNames from './makeCssFromModuleNames';
 import LRUCache from 'lru-cache';
 import config from './config';
+import { NotFoundError, UnsafeModuleTokenError } from './types';
 
 const { ttl_bundle, staticFolder, cacheRefreshToken } = config;
 
@@ -39,60 +40,72 @@ onCacheRefresh(makeBundleCache);
 
 // ===========================================================================
 
-const retInvalidVersion = (versionParam: string) =>
-	Promise.reject('Invalid version ' + JSON.stringify(versionParam));
+class VersionError extends NotFoundError {
+	constructor(versionParam: string) {
+		super('Invalid version ' + JSON.stringify(versionParam));
+	}
+}
 
-const getCssBundle = (req: FastifyRequest): Promise<BundleData> =>
-	Promise.resolve().then(() => {
-		const url = req.req.url as string;
+const getCssBundle = (
+	req: FastifyRequest
+): Promise<BundleData | { error: NotFoundError }> =>
+	Promise.resolve()
+		.then(() => {
+			const url = req.req.url as string;
 
-		let cachedBundle = bundleCache.get(url);
-		if (cachedBundle) {
-			return cachedBundle;
-		}
+			let cachedBundle = bundleCache.get(url);
+			if (cachedBundle) {
+				return cachedBundle;
+			}
 
-		const versionParam = ((req.params.version as string) || '')
-			// tolerate trailing slash
-			.replace(/\/$/, '');
+			const versionParam = ((req.params.version as string) || '')
+				// tolerate trailing slash
+				.replace(/\/$/, '');
 
-		if (versionParam === cacheRefreshToken) {
-			console.info('Nudging cache');
-			refreshCache();
-			return retInvalidVersion(versionParam);
-		}
+			if (versionParam === cacheRefreshToken) {
+				console.info('Nudging cache');
+				refreshCache();
+				throw new VersionError(versionParam);
+			}
 
-		const versionFolder = resolveCssVersionFolder(staticFolder, versionParam);
-		if (!versionFolder) {
-			return retInvalidVersion(versionParam);
-		}
+			const versionFolder = resolveCssVersionFolder(staticFolder, versionParam);
+			if (!versionFolder) {
+				throw new VersionError(versionParam);
+			}
 
-		const modules = getModuleListFromQuery(req.query);
-		if (modules.length === 0) {
-			return Promise.reject('No modules specified');
-		}
+			const modules = getModuleListFromQuery(req.query);
+			if (modules.length === 0) {
+				throw new NotFoundError('No modules specified');
+			}
 
-		// Check if a cached result exists for the normalized version of the token list
-		const normalizedTokens = versionFolder + '|' + modules.join(',');
-		cachedBundle = bundleCache.get(normalizedTokens);
-		if (cachedBundle) {
-			// make the current url alias for the normalized token list
-			bundleCache.set(url, cachedBundle);
-			return cachedBundle;
-		}
+			// Check if a cached result exists for the normalized version of the token list
+			const normalizedTokens = versionFolder + '|' + modules.join(',');
+			cachedBundle = bundleCache.get(normalizedTokens);
+			if (cachedBundle) {
+				// make the current url alias for the normalized token list
+				bundleCache.set(url, cachedBundle);
+				return cachedBundle;
+			}
 
-		return parseModules(staticFolder + versionFolder, modules).then((parsedModules) => {
-			const linkHeader = makeLinkHeaderValue(versionFolder, parsedModules);
-			const css = makeCssFromModuleNames(versionFolder, parsedModules);
-			const bundle = {
-				css,
-				linkHeader,
-			};
+			return parseModules(staticFolder + versionFolder, modules).then((parsedModules) => {
+				const linkHeader = makeLinkHeaderValue(versionFolder, parsedModules);
+				const css = makeCssFromModuleNames(versionFolder, parsedModules);
+				const bundle = {
+					css,
+					linkHeader,
+				};
 
-			bundleCache.set(url, bundle);
-			bundleCache.set(normalizedTokens, bundle);
-			return bundle;
+				bundleCache.set(url, bundle);
+				bundleCache.set(normalizedTokens, bundle);
+				return bundle;
+			});
+		})
+		.catch((error) => {
+			if (error instanceof NotFoundError) {
+				return { error };
+			}
+			throw error;
 		});
-	});
 
 // ===========================================================================
 
@@ -109,15 +122,22 @@ const cssBundler: RequestHandler = (req, res) => {
 		return;
 	}
 
-	return getCssBundle(req).then(({ css, linkHeader }) => {
-		res.headers({
-			Link: linkHeader,
-			ETag: lastModified,
-			'Content-Type': 'text/css; charset=UTF-8',
-			'Cache-Control': CACHE_CONTROL_VALUE,
-		});
-		res.status(200);
-		res.send(css);
+	return getCssBundle(req).then((result) => {
+		if ('error' in result) {
+			const status = result.error instanceof UnsafeModuleTokenError ? 403 : 404;
+			res.status(status);
+			res.send(result.error.message);
+		} else {
+			const { css, linkHeader } = result;
+			res.headers({
+				Link: linkHeader,
+				ETag: lastModified,
+				'Content-Type': 'text/css; charset=UTF-8',
+				'Cache-Control': CACHE_CONTROL_VALUE,
+			});
+			res.status(200);
+			res.send(css);
+		}
 	});
 };
 

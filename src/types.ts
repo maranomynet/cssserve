@@ -1,15 +1,20 @@
 export type ParsedModules = Array<string | { ignored: string }>;
 
 // ---------------------------------------------------------------------------
-
-export class ModuleError extends Error {
+export class NotFoundError extends Error {
 	__proto__: Error; // TS Extend native type Workaround (https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work)
-	moduleName: string;
+	constructor(message: string) {
+		super(message);
+		this.__proto__ = new.target.prototype; // TS Extend native type Workaround
+	}
+}
+
+export class ModuleError extends NotFoundError {
 	constructor(message: string, moduleName: string) {
 		super(message + ': ' + JSON.stringify(moduleName));
-		this.__proto__ = new.target.prototype; // TS Extend native type Workaround
 		this.moduleName = moduleName;
 	}
+	moduleName: string;
 }
 export class NonExistentModuleError extends ModuleError {
 	constructor(moduleName: string) {

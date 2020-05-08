@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- fix: Return 404/403 for "not found" and "forbidden" bundling tokens
 
 ## 1.1.1
 
