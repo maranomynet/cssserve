@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- fix: Prevent linking to CSS files containing only CSS comments
 
 ## 1.1.2
 
