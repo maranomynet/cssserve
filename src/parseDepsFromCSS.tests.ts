@@ -75,12 +75,12 @@ o.spec('parseDepsFromCSS', () => {
 			expects_hasCSS: false,
 		},
 		'No significant content is detected': {
-			css: '\n /*! @deps */\n\n  \n ',
+			css: '\n /*! @deps\n*/\n\n  \n ',
 			expects: [],
 			expects_hasCSS: false,
 		},
 		'No significant non-@deps content is detected': {
-			css: '/*! @deps Button */\n \n/* other *//* comments */\n',
+			css: '/*! @deps Button */\n \n/* other *//* comments\n */\n',
 			expects: ['Button'],
 			expects_hasCSS: false,
 		},

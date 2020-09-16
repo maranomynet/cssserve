@@ -2,7 +2,7 @@ export type CssDepsList = Array<string> & { hasCSS: boolean };
 
 const parseDepsFromCSS = (cssSource: string): CssDepsList => {
 	// if (/\/\*!\s*@deps\s/.test(cssSource.slice(0, 1000))) {
-	const match = cssSource.match(/\/\*!\s*@deps(?:\s([^*]*))\*\//);
+	const match = cssSource.match(/\/\*!\s*@deps\s([^*]*)\*\//);
 	if (match) {
 		const deps = (match[1]
 			.replace(/\n|,|;/g, ' ')
@@ -11,7 +11,7 @@ const parseDepsFromCSS = (cssSource: string): CssDepsList => {
 			.filter((x) => x) as Array<string>) as CssDepsList;
 		deps.hasCSS =
 			cssSource
-				.replace(/\/\*.*?\*\//g, '') // Remove all comments, including @deps
+				.replace(/\/\*(?:\s|.)*?\*\//g, '') // Remove all comments, including @deps
 				.trim().length > 0;
 		return deps;
 	}
