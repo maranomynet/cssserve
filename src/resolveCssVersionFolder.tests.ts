@@ -11,8 +11,12 @@ o.spec('resolveCssVersionFolder', () => {
 	});
 	o('finds highest point-version folder', () => {
 		o(resolveCssVersionFolder(staticFolder, 'v1')).equals('css/v1.10.10/');
+		o(resolveCssVersionFolder(staticFolder, 'v1.2')).equals('css/v1.2/');
 		o(resolveCssVersionFolder(staticFolder, 'v1.10')).equals('css/v1.10.10/');
 		o(resolveCssVersionFolder(staticFolder, 'v15')).equals('css/v15.1/');
+	});
+	o('returns `null` for missing/unpublished version', () => {
+		o(resolveCssVersionFolder(staticFolder, 'v1.4')).equals(null);
 	});
 	o('returns `null` for undefined version', () => {
 		o(resolveCssVersionFolder(staticFolder, undefined)).equals(null);
