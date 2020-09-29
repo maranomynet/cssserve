@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- feat: Allow `//` comments inside `@deps` blocks
 
 ## 1.1.3 – 1.1.4
 

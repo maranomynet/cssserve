@@ -114,7 +114,7 @@ Example of how `ModuleA.css` declares its dependencies:
 ```css
 /*!@deps
 	Button
-	Carousel
+	Carousel  // NOTE: comments are allowed
 	Herobanner 
 	Tabs
 */

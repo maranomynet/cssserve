@@ -84,7 +84,13 @@ o.spec('parseDepsFromCSS', () => {
 			expects: ['Button'],
 			expects_hasCSS: false,
 		},
+		'Allows `// comments` inside @deps block': {
+			css:
+				'/*! @deps // comment\nButton // some // comments\n Link\n// comment */body{color:red}',
+			expects: ['Button', 'Link'],
+		},
 	};
+
 	Object.entries(tests).forEach(([name, test]) => {
 		o(name, () => {
 			const output = parseDepsFromCSS(test.css);

@@ -5,6 +5,7 @@ const parseDepsFromCSS = (cssSource: string): CssDepsList => {
 	const match = cssSource.match(/\/\*!\s*@deps\s([^*]*)\*\//);
 	if (match) {
 		const deps = (match[1]
+			.replace(/\/\/.*(?:\n|$)/g, '')
 			.replace(/\n|,|;/g, ' ')
 			.trim()
 			.split(/\s+/)
