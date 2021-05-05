@@ -1,14 +1,17 @@
 export interface AppConfig {
 	/**
 	 *
-	 * Port number that the CSS server runs on
+	 * Port number that the CSS server runs on.
+	 *
+	 * NOTE: This setting can be overridedn by setting the env
+	 * variables NODE_PORT or PORT.
 	 *
 	 * Default: `4000`
 	 */
 	port: number;
 
 	/**
-	 * Path to the folder containing the server's static webroot
+	 * Path to the folder containing the server's static webroot.
 	 *
 	 * Default: `"public/"`
 	 * */
@@ -18,18 +21,18 @@ export interface AppConfig {
 	 * Cache-Control max-age (in seconds) for static CSS files
 	 * and other assets (fonts, images, etc.).
 	 *
-	 * `0` disable caching
+	 * A value of `0` disables the HTTP caching
 	 *
-	 * Default: 24 hours
+	 * Default: `86400` (24 hours)
 	 */
 	ttl_static: number;
 
 	/**
-	 * Cache-Control max-age (in seconds) for bundling results.
+	 * Cache-Control max-age (in seconds) for CSS bundling results.
 	 *
-	 * 0 disable caching
+	 * A value of `0` disables the HTTP caching
 	 *
-	 * Default: 1 hour
+	 * Default: `3600`  (1 hour)
 	 */
 	ttl_bundle: number;
 
@@ -42,7 +45,9 @@ export interface AppConfig {
 	cacheRefreshToken?: string | null;
 
 	/**
-	 * Disable internal caching (Useful during rapid CSS development)
+	 * Disable the server's internal caching (Useful during rapid CSS development)
+	 *
+	 * NOTE: This DOES NOT affect the Cache-Control headers set to the browser.
 	 *
 	 * Default: `true`
 	 */
@@ -51,6 +56,11 @@ export interface AppConfig {
 	/**
 	 * Is the server proxied behind another server/proxy
 	 * that provides **SSL and compression**?
+	 *
+	 * Setting `proxied` to true
+	 *  - Turns off gzip compression
+	 *  - Disables SSL (thus obviating the `ssl*` options below)
+	 *  - Switches server to HTTP/1.1 (because lack of SSL keys)
 	 *
 	 * Default: `false`
 	 */
@@ -71,14 +81,22 @@ export interface AppConfig {
 	 *    /foo/bar/privkey.pem
 	 *    /foo/bar/cert.pem
 	 * ```
-	 * Default: `undefined` (Uses unsigned cert/key files bundled with the server)
+	 *
+	 * Default: `null`  (Uses unsigned cert/key files bundled with the server)
 	 */
 	sslKeyPath?: string | null;
 
 	/**
-	 * (Optional) Full path to the SSL certificate file */
+	 * Full path to the SSL certificate file
+	 *
+	 * Defaults: `sslKeyPath + 'cert.pem'`  (Falling back the bundled unsigned certs)
+	 */
 	sslCert?: string | null;
+
 	/**
-	 * (Optional) Full path to the SSL private key file */
+	 * (Optional) Full path to the SSL private key file
+	 *
+	 * Defaults: `sslKeyPath + 'privkey.pem'`  (Falling back the bundled unsigned privkey)
+	 */
 	sslPrivkey?: string | null;
 }
