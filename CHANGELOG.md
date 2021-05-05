@@ -3,7 +3,13 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 1.2.0
+
+_2021-05-05_
+
 - feat: Allow `//` comments inside `@deps` blocks
+- docs: Improved README and AppConfig docs.
 
 ## 1.1.3 – 1.1.4
 
