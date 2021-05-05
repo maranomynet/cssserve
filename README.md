@@ -7,14 +7,15 @@ files.
 
 **Chapters:**
 
+<!-- prettier-ignore-start -->
 - [How to run it](#how-to-run-it)
 - [Configuration](#configuration)
 - [Log-levels](#log-levels)
 - [CSS dependency bundling and version resolution](#css-dependency-bundling-and-version-resolution)
-	- [Example request:](#example-request)
+	- [Example request](#example-request)
 - [Static assets](#static-assets)
-  [Example request:](#example-request)
-- [Static assets](#static-assets) [Example request:](#example-request)
+
+<!-- prettier-ignore-end -->
 
 ---
 
@@ -84,7 +85,7 @@ public/
 [resolveCssVersionFolder.tests](src/resolveCssVersionFolder.tests.ts) for more
 nerdy details.)
 
-### Example request:
+### Example request
 
 ```html
 <link
