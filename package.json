@@ -5,7 +5,10 @@
 		"bin": {
 			"cssserve": "server.js"
 		},
-		"scripts": {}
+		"scripts": {},
+		"engines": {
+			"node": ">=12"
+		}
 	},
 	"engines": {
 		"node": "^12"
