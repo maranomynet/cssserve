@@ -10,9 +10,11 @@ files.
 - [How to run it](#how-to-run-it)
 - [Configuration](#configuration)
 - [Log-levels](#log-levels)
-- [What it serves](#what-it-serves)
+- [CSS dependency bundling and version resolution](#css-dependency-bundling-and-version-resolution)
 	- [Example request:](#example-request)
+- [Static assets](#static-assets)
   [Example request:](#example-request)
+- [Static assets](#static-assets) [Example request:](#example-request)
 
 ---
 
@@ -35,7 +37,8 @@ available config values and defaults.
 The server looks for `.cssservec` in your package root (or its containing
 folders) and also accepts `CSSSERVE_*`-prefixed environment variables, direct
 CLI arguments and a `--config file` option as well.
-([See more details](https://www.npmjs.com/package/rc#standards))
+([See the `rc` docs](https://www.npmjs.com/package/rc#standards) for more
+details.)
 
 Additionally the `port` option can be overridden via the environment variables
 `NODE_PORT` and/or `PORT`.
@@ -50,13 +53,14 @@ Logging is controlled by the `NODE_ENV` variable.
 - `NODE_ENV=debug` same as `development`, but adds detailed stacktrace for all
   thrown errors
 
-## What it serves
+## CSS dependency bundling and version resolution
 
-The server's only purpose is to accept a list of CSS module names build a
+The server's primary purpose is to accept a list of CSS module names build a
 correctly ordered, deduplicated list of `@include` links to the corresponding
-CSS files and their dependencies recursively.
+CSS files and **their dependencies** (see below), recursively.
 
-For this, it exposes the endpoint `/bundle/:version?m={module1,module2,...}`
+For this, the server exposes the endpoint
+`/bundle/:version?m={module1,module2,...}`
 
 The `:version` path token can be any value ascii alpha-numerical value with
 (single) periods, slashes and underscores. (`/^[a-z0-9._-]+$/i`). Note,
@@ -75,10 +79,10 @@ public/
 		v1.10/
 ```
 
-...then the `:version` token `v1` will match the folder `css/v1.10/`. (See
-[getAllValidCssVersions.tests](src/getAllValidCssVersions.tests.ts) and
+...then the `:version` token `v1` will resolve to the folder `css/v1.10/`.
+(See [getAllValidCssVersions.tests](src/getAllValidCssVersions.tests.ts) and
 [resolveCssVersionFolder.tests](src/resolveCssVersionFolder.tests.ts) for more
-details.)
+nerdy details.)
 
 ### Example request:
 
@@ -101,7 +105,7 @@ Example response (with comments):
 @import '/css/v1.10/Tabs.css';
 /* "ModuleA" from query-string */
 @import '/css/v1.10/ModuleA.css';
-/* Unique dependencies of ModuleB.css */
+/* Dependencies of ModuleB.css not already met by ModuleA */
 @import '/css/v1.10/FormInput.css';
 @import '/css/v1.10/Selectbox.css';
 @import '/css/v1.10/BasicTable.css';
@@ -127,3 +131,9 @@ Example of how `ModuleA.css` declares its dependencies:
 
 (See [parseDepsFromCSS.tests](src/parseDepsFromCSS.tests.ts) and
 [parseModules.tests](src/parseModules.tests.ts) for details.)
+
+## Static assets
+
+Any files/folders you place inside `options.staticFolder` will automatically
+exposed and served with a HTTP caching lifetime set to `options.ttl_static`
+(same as the `@import`ed CSS files and their linked assets).
