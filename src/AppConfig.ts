@@ -99,4 +99,12 @@ export interface AppConfig {
 	 * Defaults: `sslKeyPath + 'privkey.pem'`  (Falling back the bundled unsigned privkey)
 	 */
 	sslPrivkey?: string | null;
+
+	/**
+	 * Controls if the server (loudly) throws an error on bad CSS module tokens
+	 * or if it simply outputs a silent warning as a CSS comment
+	 *
+	 * Default: `process.env.NODE_ENV !== 'production'`
+	 */
+	loudBadTokenErrors?: boolean;
 }

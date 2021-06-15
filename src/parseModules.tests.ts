@@ -3,14 +3,29 @@ import parseModules from './parseModules';
 import { ParsedModules, NonExistentModuleError, UnsafeModuleTokenError } from './types';
 import { staticFolder } from '../testing/cssserve-config.json';
 
+const defaultOpts = {
+	cache: true,
+	loudBadTokenErrors: false,
+};
+
+type Opts = Parameters<typeof parseModules>[2];
+
 // ---------------------------------------------------------------------------
 
 o.spec('parseModules', () => {
 	const sourceFolder = staticFolder + 'css/dev/';
 
 	type TestDescr =
-		| { input: Array<string>; expected: ParsedModules }
-		| { input: Array<string>; error: { notFound: string } | { invalid: string } };
+		| {
+				input: Array<string>;
+				expected: ParsedModules;
+				opts?: Opts;
+		  }
+		| {
+				input: Array<string>;
+				error: { notFound: string } | { invalid: string };
+				opts?: Opts;
+		  };
 
 	const tests: Record<string, TestDescr> = {
 		'finds a basic module': {
@@ -55,14 +70,24 @@ o.spec('parseModules', () => {
 			expected: ['Button', 'Prompt', 'Input', 'Search'],
 		},
 		// ---------------------
-		'Throws for broken top-level module tokens that match no CSS file': {
+		'Warns about broken top-level module tokens that match no CSS file': {
+			input: ['Prompt', 'Button', 'Search', 'Http404'],
+			expected: ['Button', { ignored: 'Http404' }, 'Prompt', 'Input', 'Search'],
+		},
+		'Optionally throws for broken top-level module tokens that match no CSS file': {
 			input: ['Prompt', 'Button', 'Search', 'Http404'],
 			error: { notFound: 'Http404' },
+			opts: { loudBadTokenErrors: true },
 		},
-		// NOTE: Belt + Suspenders! - just in case.
 		'Throws for unsafe top-level module tokens': {
 			input: ['Prompt', 'Button', 'Search', '/etc/evil/token'],
 			error: { invalid: '/etc/evil/token' },
+			opts: { loudBadTokenErrors: true },
+		},
+		'Throws for unsafe top-level module tokens regardless config.loadBadTokenErrors': {
+			input: ['Prompt', 'Button', 'Search', '/etc/evil/token'],
+			error: { invalid: '/etc/evil/token' },
+			opts: { loudBadTokenErrors: false },
 		},
 		// NOTE: Don't bother users of cssBundler with the mistakes of the CSS author.
 		'Broken /*!@deps*/ tokens in CSS files are silently ignored': {
@@ -83,7 +108,7 @@ o.spec('parseModules', () => {
 
 	Object.entries(tests).forEach(([name, test]) => {
 		o(name, (done) => {
-			const modulesP = parseModules(sourceFolder, test.input);
+			const modulesP = parseModules(test.input, sourceFolder, test.opts || defaultOpts);
 
 			if ('expected' in test) {
 				modulesP

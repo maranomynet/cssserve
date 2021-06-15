@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- feat: Add `config.loudBadTokenErrors` (default: `false` in "production")
 
 ## 1.2.0 – 1.2.1
 

@@ -14,6 +14,7 @@ const defaults = {
 	ttl_bundle: 1 * HOUR,
 	proxied: false,
 	cache: true,
+	loudBadTokenErrors: process.env.NODE_ENV !== 'production',
 };
 
 const config = rc(appName, defaults) as AppConfig;
@@ -29,5 +30,6 @@ config.proxied = Boolean(config.proxied);
 config.sslKeyPath = config.sslKeyPath && config.sslKeyPath.trim();
 // config.sslCert =
 // config.sslPrivkey =
+config.loudBadTokenErrors = Boolean(config.loudBadTokenErrors);
 
 export default config as Readonly<AppConfig>;

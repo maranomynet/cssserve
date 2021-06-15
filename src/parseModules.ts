@@ -5,7 +5,7 @@ import parseDepsFromCSS, { CssDepsList } from './parseDepsFromCSS';
 import isSafeToken from './isSafeToken';
 import { isDev } from './env';
 import { ParsedModules, UnsafeModuleTokenError, NonExistentModuleError } from './types';
-import config from './config';
+import { AppConfig } from './AppConfig';
 
 // ---------------------------------------------------------------------------
 
@@ -19,11 +19,16 @@ const makeModuleValidator = (sourceFolder: string) => (moduleName: string) => {
 
 const findFirstError = (
 	modules: ReadonlyArray<string>,
-	isInvalidModule: ReturnType<typeof makeModuleValidator>
+	isInvalidModule: ReturnType<typeof makeModuleValidator>,
+	loudErrors: boolean | undefined
 ) => {
-	let moduleError: undefined | NonExistentModuleError | UnsafeModuleTokenError;
-	modules.forEach((moduleName) => {
-		moduleError = moduleError || isInvalidModule(moduleName);
+	let moduleError: ReturnType<typeof isInvalidModule>;
+	modules.find((moduleName) => {
+		const error = isInvalidModule(moduleName);
+		if (error && (loudErrors || error instanceof UnsafeModuleTokenError)) {
+			moduleError = error;
+			return true; // exit loop early
+		}
 	});
 	return moduleError;
 };
@@ -35,8 +40,8 @@ onCacheRefresh(() => {
 	_depsCache = {};
 });
 
-const getDepsFor = (file: string) => {
-	let deps = config.cache && _depsCache[file];
+const getDepsFor = (file: string, cache = true) => {
+	let deps = cache && _depsCache[file];
 	if (!deps) {
 		const css = readFileSync(file, 'utf8');
 		deps = parseDepsFromCSS(css).sort(lowercaseFirstCompare);
@@ -46,14 +51,15 @@ const getDepsFor = (file: string) => {
 };
 
 const parseModules = (
+	modules: ReadonlyArray<string>,
 	sourceFolder: string,
-	modules: ReadonlyArray<string>
+	opts: Pick<AppConfig, 'cache' | 'loudBadTokenErrors'>
 ): Promise<ParsedModules> =>
 	new Promise((resolve, reject) => {
 		const isInvalidModule = makeModuleValidator(sourceFolder);
 
 		// Check if the top-level modules coming from the URL are safe and sane
-		const moduleError = findFirstError(modules, isInvalidModule);
+		const moduleError = findFirstError(modules, isInvalidModule, opts.loudBadTokenErrors);
 		if (moduleError) {
 			reject(moduleError);
 			return;
@@ -82,7 +88,7 @@ const parseModules = (
 
 			found[moduleName] = true;
 			contextFile = sourceFolder + moduleName + '.css';
-			const deps = getDepsFor(contextFile);
+			const deps = getDepsFor(contextFile, opts.cache);
 
 			return deps.reduce(parseDepsTree, list).concat(deps.hasCSS ? [moduleName] : []);
 		};

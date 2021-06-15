@@ -9,7 +9,7 @@ import LRUCache from 'lru-cache';
 import config from './config';
 import { NotFoundError, UnsafeModuleTokenError } from './types';
 
-const { ttl_bundle, staticFolder, cacheRefreshToken } = config;
+const { ttl_bundle, staticFolder, cacheRefreshToken, cache, loudBadTokenErrors } = config;
 
 const CACHE_CONTROL_VALUE =
 	'public, max-age=' + ttl_bundle + (ttl_bundle ? ', immutable' : '');
@@ -87,7 +87,10 @@ const getCssBundle = (
 				return cachedBundle;
 			}
 
-			return parseModules(staticFolder + versionFolder, modules).then((parsedModules) => {
+			return parseModules(modules, staticFolder + versionFolder, {
+				cache,
+				loudBadTokenErrors,
+			}).then((parsedModules) => {
 				const linkHeader = makeLinkHeaderValue(versionFolder, parsedModules);
 				const css = makeCssFromModuleNames(versionFolder, parsedModules);
 				const bundle = {
