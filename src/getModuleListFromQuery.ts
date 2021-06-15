@@ -1,4 +1,3 @@
-import isSafeToken from './isSafeToken';
 import lowercaseFirstCompare from './lowercaseFirstCompare';
 
 type QueryObj = Readonly<Record<string, string | ReadonlyArray<string> | undefined>>;
@@ -14,15 +13,11 @@ const getParamArr = (query: QueryObj, name: string): string => {
 
 // ---------------------------------------------------------------------------
 
-const getModuleListFromQuery = (query: QueryObj) => {
-	let allTokensValid = true;
-	const modules = getParamArr(query, 'm')
-		.split(',')
-		.filter((token) => {
-			allTokensValid = allTokensValid && isSafeToken(token);
-			return token;
-		});
-	return allTokensValid ? modules.sort(lowercaseFirstCompare) : [];
-};
+const getModuleListFromQuery = (query: QueryObj): ReadonlyArray<string> =>
+	getParamArr(query, 'm')
+		.trim()
+		.split(/\s*,\s*/)
+		.filter((token) => token)
+		.sort(lowercaseFirstCompare);
 
 export default getModuleListFromQuery;
