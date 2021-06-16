@@ -20,8 +20,8 @@
 		"publishcanary": "yarn run build  &&  npm publish dist --tag canary",
 		"prepublishOnly": "echo \"\nRun 'yarn run publishdist' to publish this package\n\n\"  && exit 1",
 		"format": "eslint --fix  \"*.js\" \"build/*.js\" \"src/**/*.{js,ts,tsx}\"  &&  prettier --write \"*.md\" \"*.json\"  \"src/**/*.json\"",
-		"build": "gulp build  &&  yarn run test",
-		"dev": "gulp dev",
+		"build": "yarn  &&  gulp build  &&  yarn run test",
+		"dev": "yarn  &&  gulp dev",
 		"test": "ospec 'testing/__tests/**/*.tests.js'",
 		"dev:test": "yarn run test  &&  onchange 'testing/__tests/**/*.tests.js' -f add,change -- ospec {{changed}}",
 		"dev:server": "node dist/server --config testing/cssserve-config.json"
@@ -40,7 +40,7 @@
 		"@hugsmidjan_is/qj": "^3.5.0"
 	},
 	"devDependencies": {
-		"@hugsmidjan/gulp-rollup": "^0.8.0",
+		"@hugsmidjan/gulp-rollup": "^0.8.2",
 		"@hugsmidjan/hxmstyle": "^2.4.0",
 		"@types/compression": "^1.7.0",
 		"@types/lru-cache": "^5.1.0",

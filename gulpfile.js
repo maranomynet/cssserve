@@ -14,6 +14,7 @@ const baseOpts = {
 	minify: false,
 	codeSplit: false,
 	sourcemaps: false,
+	NODE_ENV: undefined,
 	inputOpts: {
 		// Returns true for local module ids (treats node_modules/*  as external)
 		external: (id) => /^(?:\0|\.|\/|tslib)/.test(id) === false,
@@ -26,7 +27,6 @@ const [scriptsBundle, scriptsWatch] = rollupTaskFactory({
 	...baseOpts,
 	name: 'build_server',
 	glob: ['server.ts'],
-	NODE_ENV: undefined,
 	// glob: ['**/*.ts', '!**/*{tests,privates,WIP}.ts', '!__testing/**/*.ts'];,
 	dist: distFolder,
 });

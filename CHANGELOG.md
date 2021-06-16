@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- fix: `NODE_ENV` was wiped/ingored by a bad build configuration
 
 ## 1.3.0
 
