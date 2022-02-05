@@ -31,6 +31,7 @@ config.sslKeyPath = config.sslKeyPath && config.sslKeyPath.trim();
 // config.sslCert =
 // config.sslPrivkey =
 config.loudBadTokenErrors = Boolean(config.loudBadTokenErrors);
-config.preload = Boolean(config.preload || true);
+config.preload =
+	config.preload || config.preload === false ? Boolean(config.preload) : true;
 
 export default config as Readonly<AppConfig>;
