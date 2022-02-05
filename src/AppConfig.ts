@@ -107,4 +107,12 @@ export interface AppConfig {
 	 * Default: `process.env.NODE_ENV !== 'production'`
 	 */
 	loudBadTokenErrors?: boolean;
+
+	/**
+	 * Controls if the server sets a HTTP `Link:` header pre-emtively listing
+	 * all the `@imported` CSS files in the CSS bundle response.
+	 *
+	 * Default: `true`
+	 */
+	preload?: boolean;
 }

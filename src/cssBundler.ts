@@ -9,7 +9,14 @@ import LRUCache from 'lru-cache';
 import config from './config';
 import { NotFoundError, UnsafeModuleTokenError } from './types';
 
-const { ttl_bundle, staticFolder, cacheRefreshToken, cache, loudBadTokenErrors } = config;
+const {
+	ttl_bundle,
+	staticFolder,
+	cacheRefreshToken,
+	cache,
+	loudBadTokenErrors,
+	preload,
+} = config;
 
 const CACHE_CONTROL_VALUE =
 	'public, max-age=' + ttl_bundle + (ttl_bundle ? ', immutable' : '');
@@ -65,6 +72,7 @@ const getCssBundle = (
 			if (versionParam === cacheRefreshToken) {
 				console.info('Nudging cache');
 				refreshCache();
+				// Pretend nothing happened.
 				throw new VersionError(versionParam);
 			}
 
@@ -91,7 +99,9 @@ const getCssBundle = (
 				cache,
 				loudBadTokenErrors,
 			}).then((parsedModules) => {
-				const linkHeader = makeLinkHeaderValue(versionFolder, parsedModules);
+				const linkHeader = preload
+					? makeLinkHeaderValue(versionFolder, parsedModules)
+					: undefined;
 				const css = makeCssFromModuleNames(versionFolder, parsedModules);
 				const bundle = {
 					css,
@@ -132,12 +142,16 @@ const cssBundler: RequestHandler = (req, res) => {
 			res.send(result.error.message);
 		} else {
 			const { css, linkHeader } = result;
-			res.headers({
+			const headers: Parameters<typeof res.headers>[0] = {
 				Link: linkHeader,
 				ETag: lastModified,
 				'Content-Type': 'text/css; charset=UTF-8',
 				'Cache-Control': CACHE_CONTROL_VALUE,
-			});
+			};
+			if (!config.preload) {
+				delete headers.Link;
+			}
+			res.headers(headers);
 			res.status(200);
 			res.send(css);
 		}
