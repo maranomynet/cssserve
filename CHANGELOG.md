@@ -3,6 +3,11 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 1.4.0
+
+_2022-02-05_
+
 - feat: Add `config.preload` (default: `true`)
 
 ## 1.3.1
