@@ -3,6 +3,11 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 1.5.0
+
+_2022-06-15_
+
 - feat: Add static redirects via `config.redirects` and `config.redirectsFile`
 
 ## 1.4.0 — 1.4.1
