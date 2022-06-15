@@ -1,6 +1,7 @@
 import rc from 'rc';
 import { name as pkgName } from '../package.json';
 import { AppConfig } from './AppConfig';
+import { parseRedirects } from './parseRedirects';
 
 const normalizePathSlash = (path: string) => path.replace(/\/*$/, '/');
 
@@ -34,4 +35,7 @@ config.loudBadTokenErrors = Boolean(config.loudBadTokenErrors);
 config.preload =
 	config.preload || config.preload === false ? Boolean(config.preload) : true;
 
-export default config as Readonly<AppConfig>;
+config.redirects = parseRedirects(config.redirects, config.redirectsFile);
+config.redirectsFile = undefined;
+
+export default config as Readonly<Omit<AppConfig, 'redirect'>>;

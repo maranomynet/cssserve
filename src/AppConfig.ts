@@ -115,4 +115,46 @@ export interface AppConfig {
 	 * Default: `true`
 	 */
 	preload?: boolean;
+
+	/**
+	 * A static map of absolute paths and where they should redirect to.
+	 * By default those redirects are temporary, lasting `ttl_static` seconds,
+	 * but that can be configured by adding a hash fragment to the destination path
+	 * containing the desired TTL in seconds (or "!" for permanent redirects)
+	 *
+	 * Example:
+	 * ```json
+	 *   "redirects": {
+	 *     // Normal 307 redirect
+	 *     "old/path": "new/path",
+	 *     // 307 with custom TTL of 60 seconds
+	 *     "old/path2": "new/path2#60",
+	 *     // HTTP 301 Moved Permanently
+	 *     "deleted/resource": "new/resource#!",
+	 *   },
+	 * ```
+	 *
+	 * A string value is treated like a file path to a JSON file containing
+	 * redirect information in the same format as `redirects` above.
+	 *
+	 * Example:
+	 * ```json
+	 *   "redirects": "./redirects.json",
+	 * ```
+	 */
+	redirects?: Record<string, string>;
+
+	/**
+	 * A file path to a JSON file containing
+	 * redirect information in the same format as `redirects` above.
+	 *
+	 * Example:
+	 * ```json
+	 *   "redirectsFile": "./redirects.json",
+	 * ```
+	 *
+	 * If `redirects` is also defined, then the contents of `redirectsFile`
+	 * are merged into it.
+	 */
+	redirectsFile?: string;
 }

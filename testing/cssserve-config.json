@@ -1,5 +1,11 @@
 {
 	"staticFolder": "testing/public/",
 	"cacheRefreshToken": "refreshCache",
-	"sslKeyPath": "default-keys/"
+	"sslKeyPath": "default-keys/",
+	"redirects": {
+		"/foo": "/bar",
+		"/foo2": "/bar#30",
+		"/foo3": "/bar#!"
+	},
+	"redirectsFile": "testing/redirectsFile.json"
 }

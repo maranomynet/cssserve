@@ -8,6 +8,7 @@ import cssBundler from './cssBundler';
 import config from './config';
 import { resolve } from 'path';
 import { isProd, isDebug } from './env';
+import { registerRedirects } from './registerRedirects';
 
 const {
 	port,
@@ -42,6 +43,8 @@ app.register(fastifyCors, {
 	origin: true,
 	methods: ['GET'],
 });
+
+registerRedirects(app);
 
 app.register(fastifyStatic, {
 	root: resolve(staticFolder),
