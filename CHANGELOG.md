@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- **BREAKING** chore: Update min node version to 16
 
 ## 1.5.0
 
