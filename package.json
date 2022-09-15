@@ -41,36 +41,48 @@
 	},
 	"devDependencies": {
 		"@hugsmidjan/gulp-rollup": "^0.8.2",
-		"@hugsmidjan/hxmstyle": "^2.4.0",
+		"@hugsmidjan/hxmstyle": "^6.2.0",
 		"@types/compression": "^1.7.0",
 		"@types/lru-cache": "^5.1.0",
 		"@types/node": "^12",
 		"@types/ospec": "^4.0.2",
 		"@types/rc": "^1.1.0",
-		"@typescript-eslint/eslint-plugin": "^2.21.0",
-		"@typescript-eslint/parser": "^2.21.0",
+		"@typescript-eslint/eslint-plugin": "^5.15.0",
+		"@typescript-eslint/parser": "^5.15.0",
 		"del": "^5.1.0",
-		"eslint": "^6.8.0",
-		"eslint-config-prettier": "^6.10.0",
-		"eslint-plugin-destructuring": "^2.1.0",
-		"eslint-plugin-prettier": "^3.1.2",
+		"eslint": "^8.11.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-deprecation": "^1.3.2",
+		"eslint-plugin-destructure-depth": "^1.0.3",
+		"eslint-plugin-destructuring": "^2.2.1",
+		"eslint-plugin-import": "^2.25.3",
+		"eslint-plugin-prettier": "^4.0.0",
+		"eslint-plugin-simple-import-sort": "^7.0.0",
+		"eslint-plugin-total-functions": "^5.0.1",
+		"eslint-plugin-unused-imports": "^2.0.0",
 		"gulp": "^4.0.2",
 		"onchange": "^6.1.0",
 		"ospec": "^4.0.1",
-		"prettier": "^1.19.1",
-		"typescript": "^3.8.3"
+		"prettier": "^2.6.0",
+		"typescript": "^4.8.3"
 	},
 	"hxmstyle": {
 		"options": {
-			"typescript": []
+			"typescript": true
 		},
 		"dependenciesAdded": [
 			"@typescript-eslint/eslint-plugin",
 			"@typescript-eslint/parser",
 			"eslint",
 			"eslint-config-prettier",
+			"eslint-plugin-deprecation",
+			"eslint-plugin-destructure-depth",
 			"eslint-plugin-destructuring",
+			"eslint-plugin-import",
 			"eslint-plugin-prettier",
+			"eslint-plugin-simple-import-sort",
+			"eslint-plugin-total-functions",
+			"eslint-plugin-unused-imports",
 			"prettier"
 		]
 	},
