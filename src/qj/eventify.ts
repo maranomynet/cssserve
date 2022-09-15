@@ -1,9 +1,9 @@
 type Callback = (...args: any) => void;
 
 type Eventified<T extends object> = T & {
-	on(eventName: string, callback: Callback): Eventified<T>;
-	off(eventName: string, callback: Callback): Eventified<T>;
-	emit<E extends { type: string }>(event: string | E, ...args: Array<any>): Eventified<T>;
+  on(eventName: string, callback: Callback): Eventified<T>;
+  off(eventName: string, callback: Callback): Eventified<T>;
+  emit<E extends { type: string }>(event: string | E, ...args: Array<any>): Eventified<T>;
 };
 
 /**
@@ -67,56 +67,56 @@ type Eventified<T extends object> = T & {
 //   let events = {} as EventStore<Events>;
 
 export default function eventify<T extends object>(object?: T): Eventified<T> {
-	const eventified = (object || {}) as Eventified<T>;
+  const eventified = (object || {}) as Eventified<T>;
 
-	let events: Record<string, Array<Callback>> = {};
+  let events: Record<string, Array<Callback>> = {};
 
-	eventified.on = function(eventName, callback) {
-		if (callback) {
-			let callbackList = events[eventName];
-			if (!callbackList) {
-				callbackList = events[eventName] = [];
-			}
-			if (callbackList && callbackList.indexOf(callback) === -1) {
-				callbackList.push(callback);
-			}
-		}
-		return this;
-	};
+  eventified.on = function (eventName, callback) {
+    if (callback) {
+      let callbackList = events[eventName];
+      if (!callbackList) {
+        callbackList = events[eventName] = [];
+      }
+      if (callbackList && callbackList.indexOf(callback) === -1) {
+        callbackList.push(callback);
+      }
+    }
+    return this;
+  };
 
-	eventified.off = function(eventName, callback) {
-		const numArgs = arguments.length;
-		if (!numArgs) {
-			events = {};
-		} else if (numArgs === 1) {
-			delete events[eventName];
-		} else if (callback) {
-			const callbackList = events[eventName] || [];
-			const idx = callbackList.indexOf(callback);
-			if (idx > -1) {
-				callbackList.splice(idx, 1);
-			}
-		}
-		return this;
-	};
+  eventified.off = function (eventName, callback) {
+    const numArgs = arguments.length;
+    if (!numArgs) {
+      events = {};
+    } else if (numArgs === 1) {
+      delete events[eventName];
+    } else if (callback) {
+      const callbackList = events[eventName] || [];
+      const idx = callbackList.indexOf(callback);
+      if (idx > -1) {
+        callbackList.splice(idx, 1);
+      }
+    }
+    return this;
+  };
 
-	eventified.emit = function(...args) {
-		const firstArg = args[0];
-		let evType;
-		if (typeof firstArg === 'string') {
-			evType = args.shift();
-		} else if (firstArg) {
-			evType = firstArg.type;
-		}
-		if (evType != null) {
-			(events[evType] || [])
-				.slice() // clone to prevent callbacks adding to the queue in mid-air
-				.forEach((callback) => {
-					callback(...args);
-				});
-		}
-		return this;
-	};
+  eventified.emit = function (...args) {
+    const firstArg = args[0];
+    let evType;
+    if (typeof firstArg === 'string') {
+      evType = args.shift();
+    } else if (firstArg) {
+      evType = firstArg.type;
+    }
+    if (evType != null) {
+      (events[evType] || [])
+        .slice() // clone to prevent callbacks adding to the queue in mid-air
+        .forEach((callback) => {
+          callback(...args);
+        });
+    }
+    return this;
+  };
 
-	return eventified;
+  return eventified;
 }

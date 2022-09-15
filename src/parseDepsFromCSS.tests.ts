@@ -1,101 +1,101 @@
 import o from 'ospec';
+
 import parseDepsFromCSS from './parseDepsFromCSS';
 
 // ---------------------------------------------------------------------------
 
 o.spec('parseDepsFromCSS', () => {
-	const tests: Record<
-		string,
-		{
-			css: string;
-			expects: Array<string>;
-			expects_hasCSS?: false;
-		}
-	> = {
-		'Declaration with each module on its own line': {
-			css: '/*!@deps\n\tFoo\tBar\n*/body{color:red}',
-			expects: ['Foo', 'Bar'],
-		},
-		'Declaration w. mixture of spaces, commas, semi-commas and newlines': {
-			css: '/*!@deps Foo\nBar,\n \tBaz Smu;Ble \n */body{color:red}',
-			expects: ['Foo', 'Bar', 'Baz', 'Smu', 'Ble'],
-		},
-		'Allows space before "@deps"': {
-			css: '/*! @deps \n\n\tFoo\tBar\n*/body{color:red}',
-			expects: ['Foo', 'Bar'],
-		},
-		'Is OK with there not being any actual CSS': {
-			css: '\n\n/*!@deps\n\tFoo\tBar\n*/\n\nbody{color:red}',
-			expects: ['Foo', 'Bar'],
-		},
-		'Duplicate module names are purposefully allowed': {
-			css: '/*!@deps Foo,Bar,Foo,Foo,Bar*/body{color:red}',
-			expects: ['Foo', 'Bar', 'Foo', 'Foo', 'Bar'],
-		},
-		// NOTE: The parser views CSS files as a trusted source.
-		'Is purposefully agnostic about evil module names': {
-			css: '/*!@deps Fo/../o, ../Bar ${EVIL} */body{color:red}',
-			expects: ['Fo/../o', '../Bar', '${EVIL}'],
-		},
-		// ------------------------
-		'Other /*! comments may precede declaration': {
-			css: '/*! @licence Whatever */\n/*!@deps\n\tFoo\tBar\n*/body{color:red}',
-			expects: ['Foo', 'Bar'],
-		},
-		'CSS rules may precede the declaration': {
-			css: 'body{color:red}/*! @licence Whatever */\n/*!@deps\n\tFoo\tBar\n*/',
-			expects: ['Foo', 'Bar'],
-		},
-		'Only a single @deps declaration is parsed': {
-			css: '/*!@deps\n\tFoo\tBar\n*//*! @deps\n\tBaz\tSmu\n*/body{color:red}',
-			expects: ['Foo', 'Bar'],
-		},
-		// ------------------------
-		'Invalid @deps markers are ignored': {
-			css: '/*!@ deps\n\tFoo\tBar\n*/body{color:red}',
-			expects: [],
-		},
-		'Invalid @deps markers are ignored 2': {
-			css: '/*!@Deps\n\tFoo\tBar\n*/body{color:red}',
-			expects: [],
-		},
-		// ------------------------
-		'No deps is ok': {
-			css: 'body{color:red}',
-			expects: [],
-		},
-		'Empty "@deps" is ok': {
-			css: '/*! @deps */body{color:red}',
-			expects: [],
-		},
-		// ------------------------
-		'No content is detected': {
-			css: '\n\n  \n ',
-			expects: [],
-			expects_hasCSS: false,
-		},
-		'No significant content is detected': {
-			css: '\n /*! @deps\n*/\n\n  \n ',
-			expects: [],
-			expects_hasCSS: false,
-		},
-		'No significant non-@deps content is detected': {
-			css: '/*! @deps Button */\n \n/* other *//* comments\n */\n',
-			expects: ['Button'],
-			expects_hasCSS: false,
-		},
-		'Allows `// comments` inside @deps block': {
-			css:
-				'/*! @deps // comment\nButton // some // comments\n Link\n// comment */body{color:red}',
-			expects: ['Button', 'Link'],
-		},
-	};
+  const tests: Record<
+    string,
+    {
+      css: string;
+      expects: Array<string>;
+      expects_hasCSS?: false;
+    }
+  > = {
+    'Declaration with each module on its own line': {
+      css: '/*!@deps\n\tFoo\tBar\n*/body{color:red}',
+      expects: ['Foo', 'Bar'],
+    },
+    'Declaration w. mixture of spaces, commas, semi-commas and newlines': {
+      css: '/*!@deps Foo\nBar,\n \tBaz Smu;Ble \n */body{color:red}',
+      expects: ['Foo', 'Bar', 'Baz', 'Smu', 'Ble'],
+    },
+    'Allows space before "@deps"': {
+      css: '/*! @deps \n\n\tFoo\tBar\n*/body{color:red}',
+      expects: ['Foo', 'Bar'],
+    },
+    'Is OK with there not being any actual CSS': {
+      css: '\n\n/*!@deps\n\tFoo\tBar\n*/\n\nbody{color:red}',
+      expects: ['Foo', 'Bar'],
+    },
+    'Duplicate module names are purposefully allowed': {
+      css: '/*!@deps Foo,Bar,Foo,Foo,Bar*/body{color:red}',
+      expects: ['Foo', 'Bar', 'Foo', 'Foo', 'Bar'],
+    },
+    // NOTE: The parser views CSS files as a trusted source.
+    'Is purposefully agnostic about evil module names': {
+      css: '/*!@deps Fo/../o, ../Bar ${EVIL} */body{color:red}',
+      expects: ['Fo/../o', '../Bar', '${EVIL}'],
+    },
+    // ------------------------
+    'Other /*! comments may precede declaration': {
+      css: '/*! @licence Whatever */\n/*!@deps\n\tFoo\tBar\n*/body{color:red}',
+      expects: ['Foo', 'Bar'],
+    },
+    'CSS rules may precede the declaration': {
+      css: 'body{color:red}/*! @licence Whatever */\n/*!@deps\n\tFoo\tBar\n*/',
+      expects: ['Foo', 'Bar'],
+    },
+    'Only a single @deps declaration is parsed': {
+      css: '/*!@deps\n\tFoo\tBar\n*//*! @deps\n\tBaz\tSmu\n*/body{color:red}',
+      expects: ['Foo', 'Bar'],
+    },
+    // ------------------------
+    'Invalid @deps markers are ignored': {
+      css: '/*!@ deps\n\tFoo\tBar\n*/body{color:red}',
+      expects: [],
+    },
+    'Invalid @deps markers are ignored 2': {
+      css: '/*!@Deps\n\tFoo\tBar\n*/body{color:red}',
+      expects: [],
+    },
+    // ------------------------
+    'No deps is ok': {
+      css: 'body{color:red}',
+      expects: [],
+    },
+    'Empty "@deps" is ok': {
+      css: '/*! @deps */body{color:red}',
+      expects: [],
+    },
+    // ------------------------
+    'No content is detected': {
+      css: '\n\n  \n ',
+      expects: [],
+      expects_hasCSS: false,
+    },
+    'No significant content is detected': {
+      css: '\n /*! @deps\n*/\n\n  \n ',
+      expects: [],
+      expects_hasCSS: false,
+    },
+    'No significant non-@deps content is detected': {
+      css: '/*! @deps Button */\n \n/* other *//* comments\n */\n',
+      expects: ['Button'],
+      expects_hasCSS: false,
+    },
+    'Allows `// comments` inside @deps block': {
+      css: '/*! @deps // comment\nButton // some // comments\n Link\n// comment */body{color:red}',
+      expects: ['Button', 'Link'],
+    },
+  };
 
-	Object.entries(tests).forEach(([name, test]) => {
-		o(name, () => {
-			const output = parseDepsFromCSS(test.css);
-			o(output.slice(0)).deepEquals(test.expects);
-			o(output.hasCSS).equals(test.expects_hasCSS !== false);
-		});
-	});
+  Object.entries(tests).forEach(([name, test]) => {
+    o(name, () => {
+      const output = parseDepsFromCSS(test.css);
+      o(output.slice(0)).deepEquals(test.expects);
+      o(output.hasCSS).equals(test.expects_hasCSS !== false);
+    });
+  });
 });

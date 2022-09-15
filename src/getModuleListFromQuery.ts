@@ -7,17 +7,17 @@ type QueryObj = Readonly<Record<string, string | ReadonlyArray<string> | undefin
  * ...defaulting to an empty string if no parameter is found.
  */
 const getParamArr = (query: QueryObj, name: string): string => {
-	const val = query[name];
-	return val == null ? '' : typeof val === 'string' ? val : val[0];
+  const val = query[name];
+  return val == null ? '' : typeof val === 'string' ? val : val[0];
 };
 
 // ---------------------------------------------------------------------------
 
 const getModuleListFromQuery = (query: QueryObj): ReadonlyArray<string> =>
-	getParamArr(query, 'm')
-		.trim()
-		.split(/\s*,\s*/)
-		.filter((token) => token)
-		.sort(lowercaseFirstCompare);
+  getParamArr(query, 'm')
+    .trim()
+    .split(/\s*,\s*/)
+    .filter((token) => token)
+    .sort(lowercaseFirstCompare);
 
 export default getModuleListFromQuery;

@@ -12,7 +12,7 @@ files.
 - [Configuration](#configuration)
 - [Log-levels](#log-levels)
 - [CSS dependency bundling and version resolution](#css-dependency-bundling-and-version-resolution)
-	- [Example request](#example-request)
+  - [Example request](#example-request)
 - [Static assets](#static-assets)
 
 <!-- prettier-ignore-end -->
@@ -89,8 +89,8 @@ nerdy details.)
 
 ```html
 <link
-	rel="stylesheet"
-	href="https://css.server/bundle/v1?m=_base,ModuleB,ModuleA"
+  rel="stylesheet"
+  href="https://css.server/bundle/v1?m=_base,ModuleB,ModuleA"
 />
 ```
 
@@ -124,9 +124,9 @@ Example of how `ModuleA.css` declares its dependencies:
 	Tabs
 */
 @media screen {
-	.ModuleA {
-		/* ...styles for ModuleA */
-	}
+  .ModuleA {
+    /* ...styles for ModuleA */
+  }
 }
 ```
 

@@ -1,5 +1,7 @@
 import rc from 'rc';
+
 import { name as pkgName } from '../package.json';
+
 import { AppConfig } from './AppConfig';
 import { parseRedirects } from './parseRedirects';
 
@@ -9,13 +11,13 @@ const appName = pkgName.split('/').pop() as string;
 const HOUR = 60 * 60;
 
 const defaults = {
-	port: 4000,
-	staticFolder: 'public/',
-	ttl_static: 24 * HOUR,
-	ttl_bundle: 1 * HOUR,
-	proxied: false,
-	cache: true,
-	loudBadTokenErrors: process.env.NODE_ENV !== 'production',
+  port: 4000,
+  staticFolder: 'public/',
+  ttl_static: 24 * HOUR,
+  ttl_bundle: 1 * HOUR,
+  proxied: false,
+  cache: true,
+  loudBadTokenErrors: process.env.NODE_ENV !== 'production',
 };
 
 const config = rc(appName, defaults) as AppConfig;
@@ -33,7 +35,7 @@ config.sslKeyPath = config.sslKeyPath && config.sslKeyPath.trim();
 // config.sslPrivkey =
 config.loudBadTokenErrors = Boolean(config.loudBadTokenErrors);
 config.preload =
-	config.preload || config.preload === false ? Boolean(config.preload) : true;
+  config.preload || config.preload === false ? Boolean(config.preload) : true;
 
 config.redirects = parseRedirects(config.redirects, config.redirectsFile);
 config.redirectsFile = undefined;
