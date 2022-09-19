@@ -84,7 +84,7 @@ const parseModules = (
               contextFile
           );
         }
-        return list.concat({ ignored: moduleName });
+        return list.concat({ name: moduleName, invalid: true });
       }
 
       found[moduleName] = true;

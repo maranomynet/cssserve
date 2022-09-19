@@ -5,6 +5,7 @@
 - ... <!-- Add new lines here. Version number will be decided later -->
 - **BREAKING** chore: Update min node version to 16
 - **BREAKING** chore: Update fastify and other deps to most recent versions
+- feat: Report invalid tokens as "invalid", instead of "ignored" (in prod)
 
 ## 1.5.0
 

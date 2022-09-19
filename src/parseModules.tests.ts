@@ -74,7 +74,13 @@ o.spec('parseModules', () => {
     // ---------------------
     'Warns about broken top-level module tokens that match no CSS file': {
       input: ['Prompt', 'Button', 'Search', 'Http404'],
-      expected: ['Button', { ignored: 'Http404' }, 'Prompt', 'Input', 'Search'],
+      expected: [
+        'Button',
+        { name: 'Http404', invalid: true },
+        'Prompt',
+        'Input',
+        'Search',
+      ],
     },
     'Optionally throws for broken top-level module tokens that match no CSS file': {
       input: ['Prompt', 'Button', 'Search', 'Http404'],
@@ -94,14 +100,14 @@ o.spec('parseModules', () => {
     // NOTE: Don't bother users of cssBundler with the mistakes of the CSS author.
     'Broken /*!@deps*/ tokens in CSS files are silently ignored': {
       input: ['HasBrokenDependency'],
-      expected: ['Button', { ignored: 'Http404' }, 'HasBrokenDependency'],
+      expected: ['Button', { name: 'Http404', invalid: true }, 'HasBrokenDependency'],
     },
     // NOTE: Don't bother users of cssBundler with the mistakes of the CSS author.
     'Unsafe /*!@deps*/ tokens in CSS files are silently ignored': {
       input: ['HasUnsafeDependencies'],
       expected: [
-        { ignored: '../../_EVÍL$_/Http404' },
-        { ignored: '../dev/Input' },
+        { name: '../../_EVÍL$_/Http404', invalid: true },
+        { name: '../dev/Input', invalid: true },
         'Button',
         'HasUnsafeDependencies',
       ],

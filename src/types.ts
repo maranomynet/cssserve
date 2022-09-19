@@ -1,4 +1,4 @@
-export type ParsedModules = Array<string | { ignored: string }>;
+export type ParsedModules = Array<string | { name: string; invalid: true }>;
 
 // ---------------------------------------------------------------------------
 export class NotFoundError extends Error {

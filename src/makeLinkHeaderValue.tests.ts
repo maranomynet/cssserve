@@ -16,9 +16,9 @@ o.spec('makeLinkHeaderValue', () => {
 
   o('Skips ignored/invalid module tokens', () => {
     const modules: ParsedModules = [
-      { ignored: 'Http404' },
+      { name: 'Http404', invalid: true },
       'B',
-      { ignored: '../EVIL' },
+      { name: '../EVIL', invalid: true },
       'A',
     ];
     o(makeLinkHeaderValue(cssFolderName, modules)).equals(
@@ -28,7 +28,7 @@ o.spec('makeLinkHeaderValue', () => {
 
   o('Returns undefined for empty or all-invalid token lists', () => {
     const emptyList: ParsedModules = [];
-    const allInvalid: ParsedModules = [{ ignored: 'Http404' }];
+    const allInvalid: ParsedModules = [{ name: 'Http404', invalid: true }];
 
     o(makeLinkHeaderValue(cssFolderName, emptyList)).equals(undefined);
     o(makeLinkHeaderValue(cssFolderName, allInvalid)).equals(undefined);
