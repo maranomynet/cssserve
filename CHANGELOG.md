@@ -3,6 +3,11 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 2.0.0
+
+_2022-09-19_
+
 - **BREAKING** chore: Update min node version to 16
 - **BREAKING** chore: Update fastify and other deps to most recent versions
 - feat: Make "empty"/meta tokens visible in bundle output
