@@ -5,7 +5,9 @@ const makeCssFromModuleNames = (versionFolder: string, modules: ParsedModules): 
     .map((moduleName) =>
       typeof moduleName === 'string'
         ? `@import "/${versionFolder + moduleName}.css";\n`
-        : `/* token ${JSON.stringify(moduleName.name)} is invalid */\n`
+        : moduleName.invalid
+        ? `/* token ${JSON.stringify(moduleName.name)} is invalid */\n`
+        : `/* token ${JSON.stringify(moduleName.name)} has no CSS */\n`
     )
     .join('');
 

@@ -65,11 +65,19 @@ o.spec('parseModules', () => {
     // ---------------------
     'suppresses empty module files': {
       input: ['EmptyModule'],
-      expected: [],
+      expected: [{ name: 'EmptyModule', empty: true }],
     },
     'suppresses meta (@deps only) module files': {
-      input: ['MetaModule'],
-      expected: ['Button', 'Prompt', 'Input', 'Search'],
+      input: ['MetaModule', 'A'],
+      expected: [
+        'B',
+        'A',
+        'Button',
+        'Prompt',
+        'Input',
+        'Search',
+        { name: 'MetaModule', empty: true },
+      ],
     },
     // ---------------------
     'Warns about broken top-level module tokens that match no CSS file': {

@@ -91,7 +91,9 @@ const parseModules = (
       contextFile = sourceFolder + moduleName + '.css';
       const deps = getDepsFor(contextFile, opts.cache);
 
-      return deps.reduce(parseDepsTree, list).concat(deps.hasCSS ? [moduleName] : []);
+      return deps
+        .reduce(parseDepsTree, list)
+        .concat(deps.hasCSS ? [moduleName] : [{ name: moduleName, empty: true }]);
     };
 
     modules = modules.slice(0).sort(lowercaseFirstCompare);

@@ -14,12 +14,13 @@ o.spec('makeLinkHeaderValue', () => {
     );
   });
 
-  o('Skips ignored/invalid module tokens', () => {
+  o('Skips ignored/invalid and empty module tokens', () => {
     const modules: ParsedModules = [
       { name: 'Http404', invalid: true },
       'B',
       { name: '../EVIL', invalid: true },
       'A',
+      { name: 'C', empty: true },
     ];
     o(makeLinkHeaderValue(cssFolderName, modules)).equals(
       '</css/v1/B.css>;rel=preload;as=style,</css/v1/A.css>;rel=preload;as=style'
@@ -28,9 +29,12 @@ o.spec('makeLinkHeaderValue', () => {
 
   o('Returns undefined for empty or all-invalid token lists', () => {
     const emptyList: ParsedModules = [];
-    const allInvalid: ParsedModules = [{ name: 'Http404', invalid: true }];
+    const allInvalidOrEmpty: ParsedModules = [
+      { name: 'Http404', invalid: true },
+      { name: 'EmptyModule', empty: true },
+    ];
 
     o(makeLinkHeaderValue(cssFolderName, emptyList)).equals(undefined);
-    o(makeLinkHeaderValue(cssFolderName, allInvalid)).equals(undefined);
+    o(makeLinkHeaderValue(cssFolderName, allInvalidOrEmpty)).equals(undefined);
   });
 });

@@ -13,7 +13,8 @@ const outputB = `
 /* token "Http404" is invalid */
 @import "/css/v999/C.css";
 /* token "../EVIL" is invalid */
-@import "/css/v999/D.css";
+@import "/css/v999/A.css";
+/* token "D" has no CSS */
 `.trimStart();
 
 // ---------------------------------------------------------------------------
@@ -31,7 +32,8 @@ o.spec('makeCssFromModuleNames', () => {
       { name: 'Http404', invalid: true },
       'C',
       { name: '../EVIL', invalid: true },
-      'D',
+      'A',
+      { name: 'D', empty: true },
     ];
     o(makeCssFromModuleNames(cssFolderName, modules)).equals(outputB);
   });
