@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import fastify, { ServerOptionsAsHttp2, ServerOptionsAsSecureHttp2 } from 'fastify';
-import fastifyCompress from 'fastify-compress';
-import fastifyCors from 'fastify-cors';
-import fastifyStatic from 'fastify-static';
+import fastifyCompress from '@fastify/compress';
+import fastifyCors from '@fastify/cors';
+import fastifyStatic from '@fastify/static';
+import fastify, { FastifyInstance } from 'fastify';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
@@ -23,21 +23,19 @@ const {
 
 const sslKeyPath = config.sslKeyPath || __dirname + '/default-keys/';
 
-const app = fastify(
-  proxied
-    ? {}
-    : ({
-        http2: true,
-        https: {
-          allowHTTP1: true,
-          cert: readFileSync(sslCert || sslKeyPath + 'cert.pem'),
-          key: readFileSync(sslPrivkey || sslKeyPath + 'privkey.pem'),
-        },
-      } as ServerOptionsAsHttp2 | ServerOptionsAsSecureHttp2)
-);
+const app = proxied
+  ? fastify({})
+  : (fastify({
+      http2: true,
+      https: {
+        allowHTTP1: true,
+        cert: readFileSync(sslCert || sslKeyPath + 'cert.pem'),
+        key: readFileSync(sslPrivkey || sslKeyPath + 'privkey.pem'),
+      },
+    }) as unknown as FastifyInstance);
 
 if (!proxied) {
-  app.register(fastifyCompress, { global: true });
+  app.register(fastifyCompress);
 }
 
 app.register(fastifyCors, {
@@ -67,11 +65,14 @@ app.setErrorHandler((err, req, res) => {
 
 app.get('/bundle/:version', cssBundler);
 
-app.listen(port, '0.0.0.0', (err) => {
-  if (err) {
-    console.error(err);
-  } else {
+app
+  .listen({ port })
+  .then(() => {
     const protocol = proxied ? 'http' : 'https';
     console.info('CSS server listening on ' + protocol + '://localhost:' + port);
-  }
-});
+  })
+  .catch((err) => {
+    if (err) {
+      console.error(err);
+    }
+  });

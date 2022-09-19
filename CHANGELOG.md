@@ -4,6 +4,7 @@
 
 - ... <!-- Add new lines here. Version number will be decided later -->
 - **BREAKING** chore: Update min node version to 16
+- **BREAKING** chore: Update fastify and other deps to most recent versions
 
 ## 1.5.0
 
@@ -34,7 +35,7 @@ _2021-06-15_
 _2021-05-05_
 
 - feat: Allow `//` comments inside `@deps` blocks
-- docs: Improved README and AppConfig docs.
+- docs: Improved README and AppConfig docs
 
 ## 1.1.3 – 1.1.4
 

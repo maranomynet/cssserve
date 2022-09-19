@@ -9,7 +9,7 @@ const parseDepsFromCSS = (cssSource: string): CssDepsList => {
       .replace(/\n|,|;/g, ' ')
       .trim()
       .split(/\s+/)
-      .filter((x) => x) as Array<string> as CssDepsList;
+      .filter((x) => x) as CssDepsList;
     deps.hasCSS =
       cssSource
         .replace(/\/\*(?:\s|.)*?\*\//g, '') // Remove all comments, including @deps

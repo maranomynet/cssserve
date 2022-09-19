@@ -1,6 +1,8 @@
 import lowercaseFirstCompare from './lowercaseFirstCompare';
 
-type QueryObj = Readonly<Record<string, string | ReadonlyArray<string> | undefined>>;
+export type QueryObj = Readonly<
+  Record<string, string | ReadonlyArray<string> | undefined>
+>;
 
 /**
  * Returns the value of the first query parameter of a given name

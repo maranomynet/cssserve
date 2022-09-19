@@ -1,9 +1,9 @@
-import { FastifyRequest, RequestHandler } from 'fastify';
+import { FastifyReply, FastifyRequest } from 'fastify';
 import LRUCache from 'lru-cache';
 
 import { onCacheRefresh, refreshCache } from './cacheRefresher';
 import config from './config';
-import getModuleListFromQuery from './getModuleListFromQuery';
+import getModuleListFromQuery, { QueryObj } from './getModuleListFromQuery';
 import makeCssFromModuleNames from './makeCssFromModuleNames';
 import makeLinkHeaderValue from './makeLinkHeaderValue';
 import parseModules from './parseModules';
@@ -59,14 +59,14 @@ const getCssBundle = (
 ): Promise<BundleData | { error: NotFoundError }> =>
   Promise.resolve()
     .then(() => {
-      const url = req.req.url as string;
+      const url = req.raw.url as string;
 
       let cachedBundle = bundleCache.get(url);
       if (cachedBundle) {
         return cachedBundle;
       }
 
-      const versionParam = ((req.params.version as string) || '')
+      const versionParam = ((req.params as { version?: string }).version || '')
         // tolerate trailing slash
         .replace(/\/$/, '');
 
@@ -82,7 +82,7 @@ const getCssBundle = (
         throw new VersionError(versionParam);
       }
 
-      const modules = getModuleListFromQuery(req.query);
+      const modules = getModuleListFromQuery(req.query as QueryObj);
       if (modules.length === 0) {
         throw new NotFoundError('No modules specified');
       }
@@ -123,8 +123,8 @@ const getCssBundle = (
 
 // ===========================================================================
 
-const cssBundler: RequestHandler = (req, res) => {
-  const browserEtag = req.headers['If-None-Match'];
+const cssBundler = (req: FastifyRequest, res: FastifyReply) => {
+  const browserEtag = Number(req.headers['If-None-Match']) || 0;
   if (browserEtag >= lastModified) {
     res
       .headers({

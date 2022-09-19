@@ -27,29 +27,30 @@
     "dev:server": "node dist/server --config testing/cssserve-config.json"
   },
   "dependencies": {
+    "@fastify/compress": "^6.1.1",
+    "@fastify/cors": "^8.1.0",
+    "@fastify/static": "^6.5.0",
     "compression": "^1.7.4",
-    "fastify": "^2.12.0",
-    "fastify-compress": "^2.0.1",
-    "fastify-cors": "^3.0.2",
-    "fastify-static": "^2.6.0",
-    "glob": "^7.1.6",
-    "lru-cache": "^5.1.1",
+    "fastify": "^4.5.3",
+    "glob": "^8.0.3",
+    "lru-cache": "^7.14.0",
     "rc": "^1.2.8"
   },
   "__devDependencies": {
-    "@hugsmidjan_is/qj": "^3.5.0"
+    "@hugsmidjan/qj": "^4.10.2"
   },
   "devDependencies": {
-    "@hugsmidjan/gulp-rollup": "^0.8.2",
+    "@hugsmidjan/gulp-rollup": "^0.9.0",
     "@hugsmidjan/hxmstyle": "^6.2.0",
-    "@types/compression": "^1.7.0",
-    "@types/lru-cache": "^5.1.0",
-    "@types/node": "^12",
-    "@types/ospec": "^4.0.2",
+    "@types/compression": "^1.7.2",
+    "@types/glob": "^8.0.0",
+    "@types/lru-cache": "^7.10.10",
+    "@types/node": "^16",
+    "@types/ospec": "^4.0.4",
     "@types/rc": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
-    "del": "^5.1.0",
+    "del": "^6.0.0",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-deprecation": "^1.3.2",
@@ -62,7 +63,7 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "gulp": "^4.0.2",
     "onchange": "^6.1.0",
-    "ospec": "^4.0.1",
+    "ospec": "^4.1.6",
     "prettier": "^2.6.0",
     "typescript": "^4.8.3"
   },
