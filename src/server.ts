@@ -13,6 +13,7 @@ import { registerRedirects } from './registerRedirects';
 
 const {
   port,
+  host,
   staticFolder,
   proxied,
   // sslKeyPath,
@@ -66,7 +67,7 @@ app.setErrorHandler((err, req, res) => {
 app.get('/bundle/:version', cssBundler);
 
 app
-  .listen({ port })
+  .listen({ port, host })
   .then(() => {
     const protocol = proxied ? 'http' : 'https';
     console.info('CSS server listening on ' + protocol + '://localhost:' + port);

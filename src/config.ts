@@ -10,13 +10,14 @@ const normalizePathSlash = (path: string) => path.replace(/\/*$/, '/');
 const appName = pkgName.split('/').pop() as string;
 const HOUR = 60 * 60;
 
-const defaults = {
+const defaults: AppConfig = {
   port: 4000,
   staticFolder: 'public/',
   ttl_static: 24 * HOUR,
   ttl_bundle: 1 * HOUR,
   proxied: false,
   cache: true,
+  host: 'localhost',
   loudBadTokenErrors: process.env.NODE_ENV !== 'production',
 };
 

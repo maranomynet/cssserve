@@ -11,6 +11,15 @@ export type AppConfig = {
   port: number;
 
   /**
+   * The hostname/address the server listens on.
+   * See Fastify's documentation for details:
+   * https://www.fastify.io/docs/v4.6.x/Reference/Server/#listen
+   *
+   * Default `"localhost"`
+   */
+  host: string;
+
+  /**
    * Path to the folder containing the server's static webroot.
    *
    * Default: `"public/"`
