@@ -3,7 +3,13 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 2.1.0
+
+_2022-09-20_
+
 - feat: Add `config.host` (default: `"localhost"`)
+- fix: Re-introduce support for address/host `0.0.0.0`
 
 ## 2.0.0
 
