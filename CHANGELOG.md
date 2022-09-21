@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- feat: Support `allowBadTokens` query parameter on bundle urls
 
 ## 2.1.0
 

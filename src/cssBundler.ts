@@ -11,14 +11,7 @@ import { QueryObj } from './query';
 import resolveCssVersionFolder from './resolveCssVersionFolder';
 import { NotFoundError, UnsafeModuleTokenError } from './types';
 
-const {
-  ttl_bundle,
-  staticFolder,
-  cacheRefreshToken,
-  cache,
-  loudBadTokenErrors,
-  preload,
-} = config;
+const { ttl_bundle, staticFolder, cacheRefreshToken, cache, preload } = config;
 
 const CACHE_CONTROL_VALUE =
   'public, max-age=' + ttl_bundle + (ttl_bundle ? ', immutable' : '');
@@ -89,8 +82,13 @@ const getCssBundle = (
         throw new NotFoundError('No modules specified');
       }
 
+      const loudBadTokenErrors =
+        // Check undocumented magic parameter
+        'allowBadTokens' in query ? false : config.loudBadTokenErrors;
+
       // Check if a cached result exists for the normalized version of the token list
-      const normalizedTokens = versionFolder + '|' + modules.join(',');
+      const normalizedTokens =
+        versionFolder + '|' + modules.join(',') + '|' + loudBadTokenErrors;
       cachedBundle = bundleCache.get(normalizedTokens);
       if (cachedBundle) {
         // make the current url alias for the normalized token list
