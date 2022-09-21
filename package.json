@@ -24,7 +24,7 @@
     "dev": "yarn  &&  gulp dev",
     "test": "ospec 'testing/__tests/**/*.tests.js'",
     "dev:test": "yarn run test  &&  onchange 'testing/__tests/**/*.tests.js' -f add,change -- ospec {{changed}}",
-    "dev:server": "node dist/server --config testcding/cssserve-config.json"
+    "dev:server": "node dist/server --config testing/cssserve-config.json"
   },
   "dependencies": {
     "@fastify/compress": "^6.1.1",
