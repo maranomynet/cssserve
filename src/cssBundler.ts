@@ -3,10 +3,11 @@ import LRUCache from 'lru-cache';
 
 import { onCacheRefresh, refreshCache } from './cacheRefresher';
 import config from './config';
-import getModuleListFromQuery, { QueryObj } from './getModuleListFromQuery';
+import getModuleListFromQuery from './getModuleListFromQuery';
 import makeCssFromModuleNames from './makeCssFromModuleNames';
 import makeLinkHeaderValue from './makeLinkHeaderValue';
 import parseModules from './parseModules';
+import { QueryObj } from './query';
 import resolveCssVersionFolder from './resolveCssVersionFolder';
 import { NotFoundError, UnsafeModuleTokenError } from './types';
 
@@ -60,6 +61,7 @@ const getCssBundle = (
   Promise.resolve()
     .then(() => {
       const url = req.raw.url as string;
+      const query = req.query as QueryObj;
 
       let cachedBundle = bundleCache.get(url);
       if (cachedBundle) {
@@ -82,7 +84,7 @@ const getCssBundle = (
         throw new VersionError(versionParam);
       }
 
-      const modules = getModuleListFromQuery(req.query as QueryObj);
+      const modules = getModuleListFromQuery(query);
       if (modules.length === 0) {
         throw new NotFoundError('No modules specified');
       }
