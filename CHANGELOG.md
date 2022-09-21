@@ -3,6 +3,11 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 2.2.0
+
+_2022-09-21_
+
 - feat: Support `allowBadTokens` query parameter on bundle urls
 
 ## 2.1.0
