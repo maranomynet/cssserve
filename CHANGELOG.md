@@ -3,6 +3,11 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 2.2.1
+
+_2022-09-22_
+
 - fix: Setting `config.cache` to `false` throwing errors on startup
 
 ## 2.2.0
