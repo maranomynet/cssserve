@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- fix: Setting `config.cache` to `false` throwing errors on startup
 
 ## 2.2.0
 

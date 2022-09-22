@@ -31,9 +31,9 @@ const makeBundleCache = () => {
     // With maxAge `undefined` means infinite cache-lifetime,
     // but `-1` makes everything immediately stale - effectively
     // disabling any caching.
-    maxAge: config.cache ? undefined : -1,
+    ttl: config.cache ? undefined : 1,
     // number of items (unless `length` option is set)
-    max: 1000,
+    max: 2000,
   });
   lastModified = Date.now();
 };
