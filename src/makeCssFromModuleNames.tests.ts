@@ -10,11 +10,11 @@ const outputA = `
 `.trimStart();
 
 const outputB = `
-/* token "Http404" is invalid */
+/* Uknown token: "Http404" */
 @import "/css/v999/C.css";
-/* token "../EVIL" is invalid */
+/* Uknown token: "../EVIL" */
 @import "/css/v999/A.css";
-/* token "D" has no CSS */
+/* Token "D" found, but contains no CSS */
 `.trimStart();
 
 // ---------------------------------------------------------------------------
@@ -22,7 +22,7 @@ const outputB = `
 o.spec('makeCssFromModuleNames', () => {
   const cssFolderName = 'css/v999/';
 
-  o('Makes a simple CSS file with @imports. (No sorting!)', () => {
+  o('Makes a simple CSS file with @imports. (No sorting!)', () => {
     const modules: ParsedModules = ['C', 'A', 'B'];
     o(makeCssFromModuleNames(cssFolderName, modules)).equals(outputA);
   });
