@@ -3,6 +3,11 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 2.2.2
+
+_2023-02-16_
+
 - fix: Tweak wording of bundler messages for "empty" and "invalid" tokens
 
 ## 2.2.1
