@@ -19,7 +19,7 @@
     "publishdist": "yarn run build  &&  cd dist  &&  npm publish",
     "publishcanary": "yarn run build  &&  cd dist  &&  npm publish --tag canary",
     "prepublishOnly": "echo \"\nRun 'yarn run publishdist' to publish this package\n\n\"  && exit 1",
-    "format": "eslint --fix  \"*.js\" \"build/*.js\" \"src/**/*.{js,ts,tsx}\"  &&  prettier --write \"*.md\" \"*.json\"  \"src/**/*.json\"",
+    "format": "eslint --fix  \"*.js\" \"src/**/*.{js,ts,tsx}\"  &&  prettier --write \"*.{md,json}\"  \"src/**/*.{md,json}\"",
     "build": "yarn  &&  gulp build  &&  yarn run test",
     "dev": "yarn  &&  gulp dev",
     "test": "ospec 'testing/__tests/**/*.tests.js'",
