@@ -1,6 +1,6 @@
 {
   "name": "cssserve",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "dist_package_json": {
     "bin": {
       "cssserve": "server.js"

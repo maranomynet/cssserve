@@ -3,6 +3,11 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 2.3.0
+
+_2023-04-14_
+
 - feat: Accept `config.redirectsFile` paths as array
 
 ## 2.2.2
