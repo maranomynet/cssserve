@@ -1,6 +1,7 @@
 import o from 'ospec';
 
 import redirectsFromFile from '../testing/redirectsFile.json';
+import redirectsFromFile2 from '../testing/redirectsFile2.json';
 
 import { parseRedirects } from './parseRedirects';
 
@@ -10,6 +11,7 @@ const redirects1 = {
   '/foo3': '/bar#!',
 };
 const redirectsFile = 'testing/redirectsFile.json';
+const redirectsFile2 = 'testing/redirectsFile2.json';
 
 const redirectsFile_notThere = 'testing/non_existing.file';
 const redirectsFile_notJSON = 'testing/public/index.html';
@@ -17,15 +19,34 @@ const redirectsFile_notMap = 'testing/cssserve-config.json';
 
 o.spec('parseRedirects', () => {
   o('works', () => {
-    o(parseRedirects(undefined)).deepEquals(undefined);
-    o(parseRedirects(redirects1)).deepEquals(redirects1);
-    o(parseRedirects(undefined, redirectsFile)).deepEquals(redirectsFromFile);
+    o(parseRedirects(undefined)).equals(undefined)('default case');
+    o(parseRedirects(redirects1)).deepEquals(redirects1)('redirects map');
+    o(parseRedirects(undefined, redirectsFile)).deepEquals(redirectsFromFile)(
+      'redirectsFile string'
+    );
+    o(parseRedirects(undefined, '')).equals(undefined)('redirectsFile empty string');
+    o(parseRedirects(undefined, [redirectsFile])).deepEquals(redirectsFromFile)(
+      'redirectsFile array'
+    );
+    o(parseRedirects(undefined, [redirectsFile, redirectsFile2])).deepEquals({
+      ...redirectsFromFile,
+      ...redirectsFromFile2,
+    })('redirectsFile array');
+    o(parseRedirects(undefined, [])).equals(undefined)('redirectsFile empty array');
+    o(parseRedirects(undefined, [redirectsFile, '', ''])).deepEquals(redirectsFromFile)(
+      'redirectsFile sparse array'
+    );
   });
 
   o('merges contents of redirectFile into redirects', () => {
     o(parseRedirects(redirects1, redirectsFile)).deepEquals({
       ...redirects1,
       ...redirectsFromFile,
+    });
+    o(parseRedirects(redirects1, [redirectsFile, redirectsFile2])).deepEquals({
+      ...redirects1,
+      ...redirectsFromFile,
+      ...redirectsFromFile2,
     });
   });
 

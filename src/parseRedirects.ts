@@ -33,33 +33,36 @@ export const parseRedirects = (
     }
   }
 
-  if (redirectsFile) {
-    let fileContents: string | undefined;
-    try {
-      fileContents = readFileSync(redirectsFile).toString();
-    } catch (e) {
-      throw new Error(`Could not read redirectsFile "${redirects}"`);
-    }
-    let parsedContents: unknown;
-    try {
-      parsedContents = JSON.parse(fileContents);
-    } catch (e) {
-      throw new Error(`Invalid JSON found in redirectsFile "${redirects}"`);
-    }
-    const fileRedirects = ensureStringMap(parsedContents);
-    if (!fileRedirects) {
-      throw new Error(
-        `The redirectsFile "${redirects}" must contain a string→string map`
-      );
-    }
-    if (redirects) {
-      // Merge fileRedirects into redirects.
-      Object.keys(fileRedirects).forEach((key) => {
-        redirects![key] = fileRedirects[key];
-      });
-    } else {
-      redirects = fileRedirects;
-    }
-  }
+  const redirectsFiles = Array.isArray(redirectsFile) ? redirectsFile : [redirectsFile];
+  redirectsFiles
+    .filter((v): v is string => !!v)
+    .forEach((file) => {
+      let fileContents: string | undefined;
+      try {
+        fileContents = readFileSync(file).toString();
+      } catch (e) {
+        throw new Error(`Could not read redirectsFile "${file}"`);
+      }
+      let parsedContents: unknown;
+      try {
+        parsedContents = JSON.parse(fileContents);
+      } catch (e) {
+        throw new Error(`Invalid JSON found in redirectsFile "${file}"`);
+      }
+      const fileRedirects = ensureStringMap(parsedContents);
+      if (!fileRedirects) {
+        throw new Error(
+          `The redirectsFile "${file}" must contain \`Record<string, string>\``
+        );
+      }
+      if (redirects) {
+        // Merge fileRedirects into redirects.
+        Object.keys(fileRedirects).forEach((key) => {
+          redirects![key] = fileRedirects[key];
+        });
+      } else {
+        redirects = fileRedirects;
+      }
+    });
   return redirects;
 };

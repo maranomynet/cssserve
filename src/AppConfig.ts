@@ -154,16 +154,16 @@ export type AppConfig = {
   redirects?: Record<string, string>;
 
   /**
-   * A file path to a JSON file containing
-   * redirect information in the same format as `redirects` above.
+   * File path to (one or more) JSON file containing
+   * redirect information, in the same format as `redirects` above.
    *
    * Example:
    * ```json
    *   "redirectsFile": "./redirects.json",
    * ```
    *
-   * If `redirects` is also defined, then the contents of `redirectsFile`
-   * are merged into it.
+   * If the `redirects` config is also defined, then the contents of
+   * `redirectsFile` are merged into it.
    */
-  redirectsFile?: string;
+  redirectsFile?: string | Array<string>;
 };

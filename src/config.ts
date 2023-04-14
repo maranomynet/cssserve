@@ -41,4 +41,4 @@ config.preload =
 config.redirects = parseRedirects(config.redirects, config.redirectsFile);
 config.redirectsFile = undefined;
 
-export default config as Readonly<Omit<AppConfig, 'redirect'>>;
+export default config as Readonly<Omit<AppConfig, 'redirectsFile'>>;
