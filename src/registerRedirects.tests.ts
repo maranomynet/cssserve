@@ -22,6 +22,35 @@ o.spec('_normalizeRedirects', () => {
     });
   });
 
+  o('makes trailing slashes optional', () => {
+    o(
+      _normalizeRedirects({
+        '/foo/': '/bar',
+      })
+    ).deepEquals({
+      '/foo/': { target: '/bar', status, ttl },
+      '/foo': { target: '/bar', status, ttl },
+    });
+    o(
+      _normalizeRedirects({
+        '/foo/': '/bar',
+        '/foo': '/barbar',
+      })
+    ).deepEquals({
+      '/foo/': { target: '/bar', status, ttl },
+      '/foo': { target: '/barbar', status, ttl },
+    })('respects existing non-slash redirects');
+    o(
+      _normalizeRedirects({
+        '/foo': '/barbar',
+        '/foo/': '/bar',
+      })
+    ).deepEquals({
+      '/foo/': { target: '/bar', status, ttl },
+      '/foo': { target: '/barbar', status, ttl },
+    })('respects existing non-slash redirects regardless of declaration order');
+  });
+
   o('parses custom ttl from target "#anchor"', () => {
     o(
       _normalizeRedirects({

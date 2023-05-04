@@ -143,6 +143,8 @@ export type AppConfig = {
    *   },
    * ```
    *
+   * NOTE: Trailing slashes on paths are treated as optional.
+   *
    * A string value is treated like a file path to a JSON file containing
    * redirect information in the same format as `redirects` above.
    *

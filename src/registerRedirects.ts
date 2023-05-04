@@ -3,8 +3,7 @@ import { FastifyInstance } from 'fastify';
 import { AppConfig } from './AppConfig';
 import config from './config';
 
-type NormalizedRedirects = Record<
-  string,
+type RedirectInfo =
   | {
       target: string;
       status: 307;
@@ -14,8 +13,13 @@ type NormalizedRedirects = Record<
       target: string;
       status: 301;
       ttl?: never;
-    }
->;
+    };
+
+type AutoInfo = { auto?: true };
+
+type RedirectEntries = Array<[string, RedirectInfo]>;
+
+type NormalizedRedirects = Record<string, RedirectInfo>;
 
 export const MIN_TTL = 60;
 
@@ -26,17 +30,34 @@ export const _normalizeRedirects = (
     return;
   }
   return Object.fromEntries(
-    Object.entries(redirects).map(([sourcePath, targetInfo]) => {
-      const [target, ttlStr] = targetInfo.trim().split('#');
-      if (ttlStr === '!') {
-        return [sourcePath, { target, status: 301 }];
-      }
-      const ttl =
-        (ttlStr && Math.max(Math.round(parseFloat(ttlStr)), MIN_TTL)) ||
-        config.ttl_static;
-
-      return [sourcePath, { target, status: 307, ttl }];
-    })
+    Object.entries(redirects)
+      .flatMap(([sourcePath, targetInfo]): RedirectEntries => {
+        const paths = [sourcePath];
+        if (sourcePath.endsWith('/')) {
+          paths.push(sourcePath.slice(0, -1));
+        }
+        let redirectInfo: RedirectInfo;
+        const [target, ttlStr] = targetInfo.trim().split('#');
+        if (ttlStr === '!') {
+          redirectInfo = { target, status: 301 };
+        } else {
+          const ttl =
+            (ttlStr && Math.max(Math.round(parseFloat(ttlStr)), MIN_TTL)) ||
+            config.ttl_static;
+          redirectInfo = { target, status: 307, ttl };
+        }
+        return paths.map((path, i) => {
+          const info = i > 0 ? { ...redirectInfo, auto: true } : redirectInfo;
+          return [path, info];
+        });
+      })
+      .sort(([, infoA], [, infoB]) =>
+        (infoA as AutoInfo).auto && !(infoB as AutoInfo).auto ? -1 : 0
+      )
+      .map((entry) => {
+        delete (entry[1] as AutoInfo).auto;
+        return entry;
+      })
   );
 };
 
