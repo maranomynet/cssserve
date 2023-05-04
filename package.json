@@ -30,7 +30,6 @@
     "@fastify/compress": "^6.1.1",
     "@fastify/cors": "^8.1.0",
     "@fastify/static": "^6.5.0",
-    "compression": "^1.7.4",
     "fastify": "^4.5.3",
     "glob": "^8.0.3",
     "lru-cache": "^7.14.0",
@@ -42,7 +41,6 @@
   "devDependencies": {
     "@hugsmidjan/gulp-rollup": "^0.9.0",
     "@hugsmidjan/hxmstyle": "^7.0.0",
-    "@types/compression": "^1.7.2",
     "@types/glob": "^8.0.0",
     "@types/lru-cache": "^7.10.10",
     "@types/node": "^16",
