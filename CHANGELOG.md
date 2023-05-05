@@ -3,6 +3,11 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+
+## 2.4.0
+
+_2023-05-04_
+
 - feat: Treat trailing slashes on redirect paths as optional
 
 ## 2.3.0
