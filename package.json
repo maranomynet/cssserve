@@ -58,7 +58,8 @@
   },
   "author": "Hugsmiðjan ehf (http://www.hugsmidjan.is)",
   "contributors": [
-    "Már Örlygsson <mar@hugsmidjan.is>"
+    "Már Örlygsson <mar@hugsmidjan.is>",
+    "Már Örlygsson <mar.orlygsson@reykjavik.is>"
   ],
-  "repository": "git@github.com:hugsmidjan/cssserver.git"
+  "repository": "git@github.com:maranomynet/cssserver.git"
 }
