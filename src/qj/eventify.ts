@@ -71,7 +71,7 @@ type Eventified<T extends object> = T & {
 export default function eventify<T extends object>(object?: T): Eventified<T> {
   const eventified = (object || {}) as Eventified<T>;
 
-  let events: Record<string, Array<Callback>> = {};
+  let events: Record<string, Array<Callback> | undefined> = {};
 
   eventified.on = function (eventName, callback) {
     if (callback) {
