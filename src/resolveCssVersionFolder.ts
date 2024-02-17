@@ -1,7 +1,7 @@
-import { onCacheRefresh } from './cacheRefresher';
-import config from './config';
-import getAllValidCssVersions from './getAllValidCssVersions';
-import isSafeToken from './isSafeToken';
+import { onCacheRefresh } from './cacheRefresher.js';
+import config from './config.js';
+import getAllValidCssVersions from './getAllValidCssVersions.js';
+import isSafeToken from './isSafeToken.js';
 
 let _validVersions: Record<string, Record<string, string>> = {};
 onCacheRefresh(() => {

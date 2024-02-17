@@ -1,4 +1,4 @@
-import eventify from './qj/eventify';
+import eventify from './qj/eventify.js';
 
 const { on, emit } = eventify({});
 

@@ -2,7 +2,7 @@ import { sync as glob } from 'glob';
 
 const getAllValidCssVersions = (staticFolder: string): Record<string, string> => {
   const versions: Record<string, string> = {};
-  const cssFolder = staticFolder + 'css/';
+  const cssFolder = `${staticFolder}css/`;
   const versionFolders = glob('*/', { cwd: cssFolder })
     // chop trailing "/" off directoryNames
     .map((dirName) => dirName.slice(0, -1));
@@ -20,7 +20,7 @@ const getAllValidCssVersions = (staticFolder: string): Record<string, string> =>
       if (!versions[superVersion]) {
         const cutIdx = superVersion.length + 1;
         const topPointVersion = versionFolders
-          .filter((subName) => subName.startsWith(superVersion + '.'))
+          .filter((subName) => subName.startsWith(`${superVersion}.`))
           .map((subName) => subName.slice(cutIdx))
           .filter((minorVersionSuffix) => !/[^0-9.]/.test(minorVersionSuffix))
           .map((minorVersionSuffix) => {
@@ -35,16 +35,16 @@ const getAllValidCssVersions = (staticFolder: string): Record<string, string> =>
           .pop() as ReadonlyArray<number>;
         if (topPointVersion) {
           const pointVersionSuffix = topPointVersion.join('.').replace(/\.+$/, '');
-          versions[superVersion] = 'css/' + superVersion + '.' + pointVersionSuffix + '/';
+          versions[superVersion] = `css/${superVersion}.${pointVersionSuffix}/`;
         }
       }
     });
 
-    versionFolders.filter((fname) => fname.startsWith(name + '.'));
+    versionFolders.filter((fname) => fname.startsWith(`${name}.`));
   });
 
   versionFolders.forEach((name) => {
-    versions[name] = versions[name] || 'css/' + name + '/';
+    versions[name] = versions[name] || `css/${name}/`;
   });
 
   return versions;

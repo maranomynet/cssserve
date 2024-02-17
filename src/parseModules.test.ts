@@ -1,9 +1,13 @@
-import o from 'ospec';
+import { describe, expect, test } from 'bun:test';
 
 import { staticFolder } from '../testing/cssserve-config.json';
 
-import parseModules from './parseModules';
-import { NonExistentModuleError, ParsedModules, UnsafeModuleTokenError } from './types';
+import parseModules from './parseModules.js';
+import {
+  NonExistentModuleError,
+  ParsedModules,
+  UnsafeModuleTokenError,
+} from './types.js';
 
 const defaultOpts = {
   cache: true,
@@ -14,8 +18,8 @@ type Opts = Parameters<typeof parseModules>[2];
 
 // ---------------------------------------------------------------------------
 
-o.spec('parseModules', () => {
-  const sourceFolder = staticFolder + 'css/dev/';
+describe('parseModules', () => {
+  const sourceFolder = `${staticFolder}css/dev/`;
 
   type TestDescr =
     | {
@@ -122,33 +126,35 @@ o.spec('parseModules', () => {
     },
   };
 
-  Object.entries(tests).forEach(([name, test]) => {
-    o(name, (done) => {
-      const modulesP = parseModules(test.input, sourceFolder, test.opts || defaultOpts);
+  Object.entries(tests).forEach(([name, testInfo]) => {
+    test(name, () => {
+      const modulesP = parseModules(
+        testInfo.input,
+        sourceFolder,
+        testInfo.opts || defaultOpts
+      );
 
-      if ('expected' in test) {
-        modulesP
-          .then((modules) => {
-            o(modules).deepEquals(test.expected);
-            done();
-          })
-          .catch(done);
+      if ('expected' in testInfo) {
+        expect(modulesP).resolves.toEqual(testInfo.expected);
       } else {
         modulesP
           .then((modules) => {
-            // @ts-ignore
-            o(modules).equals('should have cast an error');
+            // @ts-expect-error  (messaging the problem)
+            expect(modules).toBe('should have cast an error');
           })
           .catch((err) => {
-            if ('notFound' in test.error) {
-              o(err instanceof NonExistentModuleError).equals(true);
-              o((err as NonExistentModuleError).moduleName).equals(test.error.notFound);
+            if ('notFound' in testInfo.error) {
+              expect(err).toBeInstanceOf(NonExistentModuleError);
+              expect((err as NonExistentModuleError).moduleName).toBe(
+                testInfo.error.notFound
+              );
             } else {
-              o(err instanceof UnsafeModuleTokenError).equals(true);
-              o((err as UnsafeModuleTokenError).moduleName).equals(test.error.invalid);
+              expect(err).toBeInstanceOf(UnsafeModuleTokenError);
+              expect((err as UnsafeModuleTokenError).moduleName).toBe(
+                testInfo.error.invalid
+              );
             }
-          })
-          .finally(done);
+          });
       }
     });
   });

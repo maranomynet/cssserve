@@ -1,10 +1,10 @@
-import o from 'ospec';
+import { describe, expect, test } from 'bun:test';
 
-import parseDepsFromCSS from './parseDepsFromCSS';
+import parseDepsFromCSS from './parseDepsFromCSS.js';
 
 // ---------------------------------------------------------------------------
 
-o.spec('parseDepsFromCSS', () => {
+describe('parseDepsFromCSS', () => {
   const tests: Record<
     string,
     {
@@ -91,11 +91,11 @@ o.spec('parseDepsFromCSS', () => {
     },
   };
 
-  Object.entries(tests).forEach(([name, test]) => {
-    o(name, () => {
-      const output = parseDepsFromCSS(test.css);
-      o(output.slice(0)).deepEquals(test.expects);
-      o(output.hasCSS).equals(test.expects_hasCSS !== false);
+  Object.entries(tests).forEach(([name, testInfo]) => {
+    test(name, () => {
+      const output = parseDepsFromCSS(testInfo.css);
+      expect(output.slice(0)).toEqual(testInfo.expects);
+      expect(output.hasCSS).toBe(testInfo.expects_hasCSS !== false);
     });
   });
 });

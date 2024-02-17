@@ -6,10 +6,10 @@ import fastify, { FastifyInstance } from 'fastify';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-import config from './config';
-import cssBundler from './cssBundler';
-import { isDebug, isProd } from './env';
-import { registerRedirects } from './registerRedirects';
+import config from './config.js';
+import cssBundler from './cssBundler.js';
+import { isDebug, isProd } from './env.js';
+import { registerRedirects } from './registerRedirects.js';
 
 const {
   port,
@@ -22,7 +22,7 @@ const {
   ttl_static,
 } = config;
 
-const sslKeyPath = config.sslKeyPath || __dirname + '/default-keys/';
+const sslKeyPath = config.sslKeyPath || `${__dirname}/default-keys/`;
 
 const app = proxied
   ? fastify({})
@@ -30,8 +30,8 @@ const app = proxied
       http2: true,
       https: {
         allowHTTP1: true,
-        cert: readFileSync(sslCert || sslKeyPath + 'cert.pem'),
-        key: readFileSync(sslPrivkey || sslKeyPath + 'privkey.pem'),
+        cert: readFileSync(sslCert || `${sslKeyPath}cert.pem`),
+        key: readFileSync(sslPrivkey || `${sslKeyPath}privkey.pem`),
       },
     }) as unknown as FastifyInstance);
 
@@ -61,7 +61,7 @@ app.setNotFoundHandler((req, res) => {
 app.setErrorHandler((err, req, res) => {
   !isProd && console.error('ERROR:\n  ', err.message);
   isDebug && console.error(err);
-  res.send('ERROR\n' + err.message);
+  res.send(`ERROR\n${err.message}`);
 });
 
 app.get('/bundle/:version', cssBundler);
@@ -70,7 +70,7 @@ app
   .listen({ port, host })
   .then(() => {
     const protocol = proxied ? 'http' : 'https';
-    console.info('CSS server listening on ' + protocol + '://localhost:' + port);
+    console.info(`CSS server listening on ${protocol}://localhost:${port}`);
   })
   .catch((err) => {
     if (err) {

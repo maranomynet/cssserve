@@ -1,8 +1,8 @@
-# Change Log
+# Change Log for `cssserve`
 
 ## Upcoming...
 
-- ... <!-- Add new lines here. Version number will be decided later -->
+- ... <!-- Add new lines here. -->
 - fix: Avoid setting `max-age=undefined` on redirects without `ttl` value
 
 ## 2.4.0

@@ -1,20 +1,22 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import LRUCache from 'lru-cache';
 
-import { onCacheRefresh, refreshCache } from './cacheRefresher';
-import config from './config';
-import getModuleListFromQuery from './getModuleListFromQuery';
-import makeCssFromModuleNames from './makeCssFromModuleNames';
-import makeLinkHeaderValue from './makeLinkHeaderValue';
-import parseModules from './parseModules';
-import { QueryObj } from './query';
-import resolveCssVersionFolder from './resolveCssVersionFolder';
-import { NotFoundError, UnsafeModuleTokenError } from './types';
+import { onCacheRefresh, refreshCache } from './cacheRefresher.js';
+import config from './config.js';
+import { logInfo } from './env.js';
+import getModuleListFromQuery from './getModuleListFromQuery.js';
+import makeCssFromModuleNames from './makeCssFromModuleNames.js';
+import makeLinkHeaderValue from './makeLinkHeaderValue.js';
+import parseModules from './parseModules.js';
+import { QueryObj } from './query.js';
+import resolveCssVersionFolder from './resolveCssVersionFolder.js';
+import { NotFoundError, UnsafeModuleTokenError } from './types.js';
 
 const { ttl_bundle, staticFolder, cacheRefreshToken, cache, preload } = config;
 
-const CACHE_CONTROL_VALUE =
-  'public, max-age=' + ttl_bundle + (ttl_bundle ? ', immutable' : '');
+const CACHE_CONTROL_VALUE = `public, max-age=${ttl_bundle}${
+  ttl_bundle ? ', immutable' : ''
+}`;
 
 // ===========================================================================
 
@@ -44,7 +46,7 @@ onCacheRefresh(makeBundleCache);
 
 class VersionError extends NotFoundError {
   constructor(versionParam: string) {
-    super('Invalid version ' + JSON.stringify(versionParam));
+    super(`Invalid version ${JSON.stringify(versionParam)}`);
   }
 }
 
@@ -66,7 +68,7 @@ const getCssBundle = (
         .replace(/\/$/, '');
 
       if (versionParam === cacheRefreshToken) {
-        console.info('Nudging cache');
+        logInfo('Nudging cache');
         refreshCache();
         // Pretend nothing happened.
         throw new VersionError(versionParam);
@@ -87,8 +89,9 @@ const getCssBundle = (
         'allowBadTokens' in query ? false : config.loudBadTokenErrors;
 
       // Check if a cached result exists for the normalized version of the token list
-      const normalizedTokens =
-        versionFolder + '|' + modules.join(',') + '|' + loudBadTokenErrors;
+      const normalizedTokens = `${versionFolder}|${modules.join(
+        ','
+      )}|${loudBadTokenErrors}`;
       cachedBundle = bundleCache.get(normalizedTokens);
       if (cachedBundle) {
         // make the current url alias for the normalized token list

@@ -1,4 +1,4 @@
-# cssserve – CSS Server
+# `cssserve` – CSS Server
 
 `cssserve` is a small dedicated HTTP/2 server that serves lots of small CSS
 files.
@@ -14,6 +14,8 @@ files.
 - [CSS dependency bundling and version resolution](#css-dependency-bundling-and-version-resolution)
   - [Example request](#example-request)
 - [Static assets](#static-assets)
+- [Contributing](#contributing)
+- [Change Log](#change-log)
 
 <!-- prettier-ignore-end -->
 
@@ -133,8 +135,26 @@ Example of how `ModuleA.css` declares its dependencies:
 (See [parseDepsFromCSS.tests](src/parseDepsFromCSS.tests.ts) and
 [parseModules.tests](src/parseModules.tests.ts) for details.)
 
+--
+
 ## Static assets
 
 Any files/folders you place inside `options.staticFolder` will automatically
 exposed and served with a HTTP caching lifetime set to `options.ttl_static`
 (same as the `@import`ed CSS files and their linked assets).
+
+---
+
+## Contributing
+
+This project uses the [Bun runtime](https://bun.sh) for development (tests,
+build, etc.)
+
+PRs are welcoms!
+
+---
+
+## Change Log
+
+See
+[CHANGELOG.md](https://github.com/maranomynet/cssserve/blob/master/CHANGELOG.md)

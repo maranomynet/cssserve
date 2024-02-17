@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
-import { AppConfig } from './AppConfig';
-import config from './config';
+import { AppConfig } from './AppConfig.js';
+import config from './config.js';
 
 type RedirectInfo =
   | {

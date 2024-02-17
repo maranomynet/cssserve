@@ -1,111 +1,114 @@
-import o from 'ospec';
+import { describe, expect, test } from 'bun:test';
 
-import config from './config';
-import { _normalizeRedirects, MIN_TTL } from './registerRedirects';
+import config from './config.js';
+import { _normalizeRedirects, MIN_TTL } from './registerRedirects.js';
 
 const status = 307;
 const ttl = config.ttl_static;
 
-o.spec('_normalizeRedirects', () => {
-  o('works', () => {
-    o(_normalizeRedirects(undefined)).equals(undefined);
-    o(
+describe('_normalizeRedirects', () => {
+  test('works', () => {
+    expect(_normalizeRedirects(undefined)).toBeUndefined();
+
+    expect(
       _normalizeRedirects({
         '/foo': '/bar',
         '/foo2': '/bar2',
         '/foo3': 'https://www.external.com/bar3',
       })
-    ).deepEquals({
+    ).toEqual({
       '/foo': { target: '/bar', status, ttl },
       '/foo2': { target: '/bar2', status, ttl },
       '/foo3': { target: 'https://www.external.com/bar3', status, ttl },
     });
   });
 
-  o('makes trailing slashes optional', () => {
-    o(
+  test('makes trailing slashes optional', () => {
+    expect(
       _normalizeRedirects({
         '/foo/': '/bar',
       })
-    ).deepEquals({
+    ).toEqual({
       '/foo/': { target: '/bar', status, ttl },
       '/foo': { target: '/bar', status, ttl },
     });
-    o(
+
+    expect(
       _normalizeRedirects({
         '/foo/': '/bar',
         '/foo': '/barbar',
       })
-    ).deepEquals({
+    ).toEqual({
       '/foo/': { target: '/bar', status, ttl },
       '/foo': { target: '/barbar', status, ttl },
-    })('respects existing non-slash redirects');
-    o(
+    }); // respects existing non-slash redirects
+
+    expect(
       _normalizeRedirects({
         '/foo': '/barbar',
         '/foo/': '/bar',
       })
-    ).deepEquals({
+    ).toEqual({
       '/foo/': { target: '/bar', status, ttl },
       '/foo': { target: '/barbar', status, ttl },
-    })('respects existing non-slash redirects regardless of declaration order');
+    }); // respects existing non-slash redirects regardless of declaration order
   });
 
-  o('parses custom ttl from target "#anchor"', () => {
-    o(
+  test('parses custom ttl from target "#anchor"', () => {
+    expect(
       _normalizeRedirects({
         '/foo': '/bar#666',
         '/foo2': 'https://www.external.com/bar3#99',
       })
-    ).deepEquals({
+    ).toEqual({
       '/foo': { target: '/bar', status, ttl: 666 },
       '/foo2': { target: 'https://www.external.com/bar3', status, ttl: 99 },
     });
 
-    o(_normalizeRedirects({ '/foo': '/bar#666.6' })).deepEquals({
+    expect(_normalizeRedirects({ '/foo': '/bar#666.6' })).toEqual({
       '/foo': { target: '/bar', status, ttl: 667 },
-    })('rounds floats');
+    }); // rounds floats
 
-    o(_normalizeRedirects({ '/foo': '/bar#1' })).deepEquals({
+    expect(_normalizeRedirects({ '/foo': '/bar#1' })).toEqual({
       '/foo': { target: '/bar', status, ttl: MIN_TTL },
-    })(`minimum ttl is ${MIN_TTL} seconds`);
+    }); // minimum ttl is ${MIN_TTL} seconds
 
-    o(_normalizeRedirects({ '/foo': '/bar#-999.0' })).deepEquals({
+    expect(_normalizeRedirects({ '/foo': '/bar#-999.0' })).toEqual({
       '/foo': { target: '/bar', status, ttl: MIN_TTL },
-    })(`Negative ttl is bounded at ${MIN_TTL} seconds`);
+    }); // Negative ttl is bounded at ${MIN_TTL} seconds
 
-    o(_normalizeRedirects({ '/foo': '/bar#999999999999' })).deepEquals({
+    expect(_normalizeRedirects({ '/foo': '/bar#999999999999' })).toEqual({
       '/foo': { target: '/bar', status, ttl: 999999999999 },
-    })(`Ttl has no upper bound`);
+    }); // Ttl has no upper bound
   });
 
-  o('treats "!" for ttl as permanent redirect', () => {
-    o(
+  test('treats "!" for ttl as permanent redirect', () => {
+    expect(
       _normalizeRedirects({
         '/foo': '/bar',
         '/foo2': '/bar#!',
       })
-    ).deepEquals({
+    ).toEqual({
       '/foo': { target: '/bar', status, ttl },
       '/foo2': { target: '/bar', status: 301 },
     });
   });
 
-  o('Deals predictably with wonky targets', () => {
-    o(_normalizeRedirects({ '/foo': '/bar#3003#asdf' })).deepEquals({
+  test('Deals predictably with wonky targets', () => {
+    expect(_normalizeRedirects({ '/foo': '/bar#3003#asdf' })).toEqual({
       '/foo': { target: '/bar', status, ttl: 3003 },
-    })('Only first of multiple "#anchors" is parsed');
+    }); // Only first of multiple "#anchors" is parsed
 
-    o(_normalizeRedirects({ '/foo': '/bar##3003' })).deepEquals({
+    expect(_normalizeRedirects({ '/foo': '/bar##3003' })).toEqual({
       '/foo': { target: '/bar', status, ttl },
-    })('Only first of multiple "#anchors" is parsed (2)');
+    }); // Only first of multiple "#anchors" is parsed (2)
 
-    o(_normalizeRedirects({ '/foo': '/bar#3003-silly comment' })).deepEquals({
+    expect(_normalizeRedirects({ '/foo': '/bar#3003-silly comment' })).toEqual({
       '/foo': { target: '/bar', status, ttl: 3003 },
-    })('Text after ttl value is trimmed/ignored');
+    }); // Text after ttl value is trimmed/ignored
 
-    o(_normalizeRedirects({ '/foo': '/bar#wonky33' })).deepEquals({
+    expect(_normalizeRedirects({ '/foo': '/bar#wonky33' })).toEqual({
       '/foo': { target: '/bar', status, ttl },
-    })('Malformed ttl values are ignored');
+    }); // Malformed ttl values are ignored
   });
 });

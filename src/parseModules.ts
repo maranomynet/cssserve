@@ -1,19 +1,23 @@
 import { existsSync, readFileSync } from 'fs';
 
-import { AppConfig } from './AppConfig';
-import { onCacheRefresh } from './cacheRefresher';
-import { isDev } from './env';
-import isSafeToken from './isSafeToken';
-import lowercaseFirstCompare from './lowercaseFirstCompare';
-import parseDepsFromCSS, { CssDepsList } from './parseDepsFromCSS';
-import { NonExistentModuleError, ParsedModules, UnsafeModuleTokenError } from './types';
+import { AppConfig } from './AppConfig.js';
+import { onCacheRefresh } from './cacheRefresher.js';
+import { isDev, logInfo } from './env.js';
+import isSafeToken from './isSafeToken.js';
+import lowercaseFirstCompare from './lowercaseFirstCompare.js';
+import parseDepsFromCSS, { CssDepsList } from './parseDepsFromCSS.js';
+import {
+  NonExistentModuleError,
+  ParsedModules,
+  UnsafeModuleTokenError,
+} from './types.js';
 
 // ---------------------------------------------------------------------------
 
 const makeModuleValidator = (sourceFolder: string) => (moduleName: string) => {
   if (!isSafeToken(moduleName)) {
     return new UnsafeModuleTokenError(moduleName);
-  } else if (!existsSync(sourceFolder + moduleName + '.css')) {
+  } else if (!existsSync(`${sourceFolder + moduleName}.css`)) {
     return new NonExistentModuleError(moduleName);
   }
 };
@@ -76,19 +80,18 @@ const parseModules = (
 
       if (isInvalidModule(moduleName)) {
         if (isDev) {
-          console.info(
-            'NOTE:' +
-              '\n  Invalid @deps token ' +
-              JSON.stringify(moduleName) +
-              '\n  in file ' +
-              contextFile
+          logInfo(
+            `NOTE:` +
+              `\n  Invalid @deps token ${JSON.stringify(
+                moduleName
+              )}\n  in file ${contextFile}`
           );
         }
         return list.concat({ name: moduleName, invalid: true });
       }
 
       found[moduleName] = true;
-      contextFile = sourceFolder + moduleName + '.css';
+      contextFile = `${sourceFolder + moduleName}.css`;
       const deps = getDepsFor(contextFile, opts.cache);
 
       return deps

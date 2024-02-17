@@ -15,7 +15,7 @@ export class NotFoundError extends Error {
 
 export class ModuleError extends NotFoundError {
   constructor(message: string, moduleName: string) {
-    super(message + ': ' + JSON.stringify(moduleName));
+    super(`${message}: ${JSON.stringify(moduleName)}`);
     this.moduleName = moduleName;
   }
   moduleName: string;

@@ -1,20 +1,20 @@
-import o from 'ospec';
+import { describe, expect, test } from 'bun:test';
 
-import makeLinkHeaderValue from './makeLinkHeaderValue';
-import { ParsedModules } from './types';
+import makeLinkHeaderValue from './makeLinkHeaderValue.js';
+import { ParsedModules } from './types.js';
 
 // ---------------------------------------------------------------------------
 
-o.spec('makeLinkHeaderValue', () => {
+describe('makeLinkHeaderValue', () => {
   const cssFolderName = 'css/v1/';
-  o('Makes Link HTTP header value list. (No sorting!)', () => {
+  test('Makes Link HTTP header value list. (No sorting!)', () => {
     const modules = ['B', 'A'];
-    o(makeLinkHeaderValue(cssFolderName, modules)).equals(
+    expect(makeLinkHeaderValue(cssFolderName, modules)).toBe(
       '</css/v1/B.css>;rel=preload;as=style,</css/v1/A.css>;rel=preload;as=style'
     );
   });
 
-  o('Skips ignored/invalid and empty module tokens', () => {
+  test('Skips ignored/invalid and empty module tokens', () => {
     const modules: ParsedModules = [
       { name: 'Http404', invalid: true },
       'B',
@@ -22,19 +22,19 @@ o.spec('makeLinkHeaderValue', () => {
       'A',
       { name: 'C', empty: true },
     ];
-    o(makeLinkHeaderValue(cssFolderName, modules)).equals(
+    expect(makeLinkHeaderValue(cssFolderName, modules)).toBe(
       '</css/v1/B.css>;rel=preload;as=style,</css/v1/A.css>;rel=preload;as=style'
     );
   });
 
-  o('Returns undefined for empty or all-invalid token lists', () => {
+  test('Returns undefined for empty or all-invalid token lists', () => {
     const emptyList: ParsedModules = [];
     const allInvalidOrEmpty: ParsedModules = [
       { name: 'Http404', invalid: true },
       { name: 'EmptyModule', empty: true },
     ];
 
-    o(makeLinkHeaderValue(cssFolderName, emptyList)).equals(undefined);
-    o(makeLinkHeaderValue(cssFolderName, allInvalidOrEmpty)).equals(undefined);
+    expect(makeLinkHeaderValue(cssFolderName, emptyList)).toBeUndefined();
+    expect(makeLinkHeaderValue(cssFolderName, allInvalidOrEmpty)).toBeUndefined();
   });
 });

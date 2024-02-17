@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 
-import { AppConfig } from './AppConfig';
+import { AppConfig } from './AppConfig.js';
 
 const ensureObject = (cand: unknown): Record<string, unknown> | undefined => {
   if (cand && typeof cand === 'object' && !Array.isArray(cand)) {

@@ -1,4 +1,4 @@
-import { ParsedModules } from './types';
+import { ParsedModules } from './types.js';
 
 const makeCssFromModuleNames = (versionFolder: string, modules: ParsedModules): string =>
   modules

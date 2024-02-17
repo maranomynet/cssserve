@@ -1,7 +1,7 @@
-import o from 'ospec';
+import { describe, expect, test } from 'bun:test';
 
-import makeCssFromModuleNames from './makeCssFromModuleNames';
-import { ParsedModules } from './types';
+import makeCssFromModuleNames from './makeCssFromModuleNames.js';
+import { ParsedModules } from './types.js';
 
 const outputA = `
 @import "/css/v999/C.css";
@@ -19,15 +19,15 @@ const outputB = `
 
 // ---------------------------------------------------------------------------
 
-o.spec('makeCssFromModuleNames', () => {
+describe('makeCssFromModuleNames', () => {
   const cssFolderName = 'css/v999/';
 
-  o('Makes a simple CSS file with @imports. (No sorting!)', () => {
+  test('Makes a simple CSS file with @imports. (No sorting!)', () => {
     const modules: ParsedModules = ['C', 'A', 'B'];
-    o(makeCssFromModuleNames(cssFolderName, modules)).equals(outputA);
+    expect(makeCssFromModuleNames(cssFolderName, modules)).toBe(outputA);
   });
 
-  o('Inserts comment-markers about ignored/invalid module tokens', () => {
+  test('Inserts comment-markers about ignored/invalid module tokens', () => {
     const modules: ParsedModules = [
       { name: 'Http404', invalid: true },
       'C',
@@ -35,6 +35,6 @@ o.spec('makeCssFromModuleNames', () => {
       'A',
       { name: 'D', empty: true },
     ];
-    o(makeCssFromModuleNames(cssFolderName, modules)).equals(outputB);
+    expect(makeCssFromModuleNames(cssFolderName, modules)).toBe(outputB);
   });
 });

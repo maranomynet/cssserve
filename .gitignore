@@ -1,7 +1,22 @@
+# --------------------------------------------------------------------
+# deps and build/test results
+node_modules
+/_npm-lib
+
+# --------------------------------------------------------------------
+# Junk
 .DS_Store
+yarn-debug.log*
+yarn-error.log*
+npm-debug.log*
 /.rpt2_cache
-/node_modules
+
+# --------------------------------------------------------------------
+# Ingore remains of old yarn+ospec setup
+
 /dist
+/__tests
 /testing/__tests
-/yarn-error.log
+/.yarn*
 /yarn.lock
+/.pnp.*

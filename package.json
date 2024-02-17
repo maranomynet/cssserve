@@ -1,31 +1,13 @@
 {
   "name": "cssserve",
   "version": "2.4.0",
-  "dist_package_json": {
-    "bin": {
-      "cssserve": "server.js"
-    },
-    "scripts": {},
-    "engines": {
-      "node": ">=16"
-    }
-  },
-  "engines": {
-    "node": "^16"
-  },
-  "private": false,
+  "author": "Hugsmiðjan ehf (http://www.hugsmidjan.is)",
+  "contributors": [
+    "Már Örlygsson <mar@hugsmidjan.is>",
+    "Már Örlygsson <mar.orlygsson@reykjavik.is>"
+  ],
+  "repository": "git@github.com:maranomynet/cssserver.git",
   "license": "MIT",
-  "scripts": {
-    "publishdist": "yarn run build  &&  cd dist  &&  npm publish",
-    "publishcanary": "yarn run build  &&  cd dist  &&  npm publish --tag canary",
-    "prepublishOnly": "echo \"\nRun 'yarn run publishdist' to publish this package\n\n\"  && exit 1",
-    "format": "eslint --fix  \"*.js\" \"src/**/*.{js,ts,tsx}\"  &&  prettier --write \"*.{md,json}\"  \"src/**/*.{md,json}\"",
-    "build": "yarn  &&  gulp build  &&  yarn run test",
-    "dev": "yarn  &&  gulp dev",
-    "test": "ospec 'testing/__tests/**/*.tests.js'",
-    "dev:test": "yarn run test  &&  onchange 'testing/__tests/**/*.tests.js' -f add,change -- ospec {{changed}}",
-    "dev:server": "node dist/server --config testing/cssserve-config.json"
-  },
   "dependencies": {
     "@fastify/compress": "^6.1.1",
     "@fastify/cors": "^8.1.0",
@@ -35,31 +17,50 @@
     "lru-cache": "^7.14.0",
     "rc": "^1.2.8"
   },
+  "npmPackageJson": {
+    "bin": {
+      "cssserve": "server.js"
+    },
+    "engines": {
+      "node": ">=16"
+    },
+    "sideEffects": false,
+    "type": null,
+    "private": null,
+    "scripts": null,
+    "devDependencies": null,
+    "hxmstyle": null
+  },
   "devDependencies": {
-    "@hugsmidjan/gulp-rollup": "^0.9.0",
-    "@hugsmidjan/hxmstyle": "^7.0.0",
+    "@hugsmidjan/hxmstyle": "^8.5.0",
+    "@maranomynet/libtools": "^0.1.8",
+    "@types/bun": "^1.0.5",
     "@types/glob": "^8.0.0",
     "@types/lru-cache": "^7.10.10",
-    "@types/node": "^16",
-    "@types/ospec": "^4.0.4",
     "@types/rc": "^1.1.0",
-    "del": "^6.0.0",
-    "eslint": "^8.35.0",
-    "gulp": "^4.0.2",
-    "onchange": "^6.1.0",
-    "ospec": "^4.1.6",
-    "prettier": "^2.8.2",
-    "typescript": "^4.8.3"
+    "eslint": "^8.56.0",
+    "prettier": "^2.8.8",
+    "typescript": "^5.3.3"
+  },
+  "scripts": {
+    "dev": "bun scripts/dev.ts",
+    "build": "bun scripts/build.ts",
+    "dev:server": "node _npm-lib/server.js --config testing/cssserve-config.json",
+    "publish:lib": "bun scripts/publish.ts",
+    "prepublishOnly": "echo \"\nRun 'bun run publish:lib' to publish this package\n\n\"  &&  exit 1",
+    "format": "bun scripts/format.ts"
+  },
+  "type": "module",
+  "private": false,
+  "engines": {
+    "bun": "^1.0.26",
+    "node": "9999. Please use bun",
+    "npm": "9999. Please use bun",
+    "yarn": "9999. Please use bun"
   },
   "hxmstyle": {
     "options": {
       "typescript": true
     }
-  },
-  "author": "Hugsmiðjan ehf (http://www.hugsmidjan.is)",
-  "contributors": [
-    "Már Örlygsson <mar@hugsmidjan.is>",
-    "Már Örlygsson <mar.orlygsson@reykjavik.is>"
-  ],
-  "repository": "git@github.com:maranomynet/cssserver.git"
+  }
 }

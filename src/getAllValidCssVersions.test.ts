@@ -1,14 +1,14 @@
-import o from 'ospec';
+import { describe, expect, test } from 'bun:test';
 
 import { staticFolder } from '../testing/cssserve-config.json';
 
-import getAllValidCssVersions from './getAllValidCssVersions';
+import getAllValidCssVersions from './getAllValidCssVersions.js';
 
 // ---------------------------------------------------------------------------
 
-o.spec('getAllValidCssVersions', () => {
-  o('works', () => {
-    o(getAllValidCssVersions(staticFolder)).deepEquals({
+describe('getAllValidCssVersions', () => {
+  test('works', () => {
+    expect(getAllValidCssVersions(staticFolder)).toEqual({
       dev: 'css/dev/',
       v1: 'css/v1.10.10/',
       'v1.1': 'css/v1.1/',

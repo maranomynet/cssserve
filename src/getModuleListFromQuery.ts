@@ -1,5 +1,5 @@
-import lowercaseFirstCompare from './lowercaseFirstCompare';
-import { getQueryParam, QueryObj } from './query';
+import lowercaseFirstCompare from './lowercaseFirstCompare.js';
+import { getQueryParam, QueryObj } from './query.js';
 
 // ---------------------------------------------------------------------------
 
