@@ -71,7 +71,7 @@ export const registerRedirects = (app: FastifyInstance) => {
       const { target, status, ttl } = redirectInfo;
       app.get(sourcePath, (req, res) => {
         res.header('Location', target);
-        if (ttl !== null) {
+        if (ttl != null) {
           res.header('Cache-Control', `public, max-age=${ttl}, immutable`);
         }
         res.status(status).send('');

@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. Version number will be decided later -->
+- fix: Avoid setting `max-age=undefined` on redirects without `ttl` value
 
 ## 2.4.0
 
