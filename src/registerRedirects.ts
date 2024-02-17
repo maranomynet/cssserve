@@ -37,7 +37,10 @@ export const _normalizeRedirects = (
           paths.push(sourcePath.slice(0, -1));
         }
         let redirectInfo: RedirectInfo;
-        const [target, ttlStr] = targetInfo.trim().split('#');
+        const [target, ttlStr] = targetInfo.trim().split('#') as [
+          string,
+          ...Array<string>
+        ];
         if (ttlStr === '!') {
           redirectInfo = { target, status: 301 };
         } else {

@@ -1,6 +1,6 @@
 // Copied over from https://github.com/hugsmidjan/qj/blob/dev/src/eventify/eventify.ts
 
-type Callback = (...args: any) => void;
+type Callback = (...args: Array<any>) => void;
 
 type Eventified<T extends object> = T & {
   on(eventName: string, callback: Callback): Eventified<T>;

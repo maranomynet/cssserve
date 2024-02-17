@@ -58,7 +58,7 @@ export const parseRedirects = (
       if (redirects) {
         // Merge fileRedirects into redirects.
         Object.keys(fileRedirects).forEach((key) => {
-          redirects![key] = fileRedirects[key];
+          redirects![key] = fileRedirects[key]!;
         });
       } else {
         redirects = fileRedirects;

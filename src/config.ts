@@ -7,7 +7,7 @@ import { parseRedirects } from './parseRedirects';
 
 const normalizePathSlash = (path: string) => path.replace(/\/*$/, '/');
 
-const appName = pkgName.split('/').pop() as string;
+const appName = pkgName.split('/').pop()!;
 const HOUR = 60 * 60;
 
 const defaults: AppConfig = {

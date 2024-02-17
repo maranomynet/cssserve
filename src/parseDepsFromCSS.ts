@@ -4,7 +4,7 @@ const parseDepsFromCSS = (cssSource: string): CssDepsList => {
   // if (/\/\*!\s*@deps\s/.test(cssSource.slice(0, 1000))) {
   const match = cssSource.match(/\/\*!\s*@deps\s([^*]*)\*\//);
   if (match) {
-    const deps = match[1]
+    const deps = match[1]!
       .replace(/\/\/.*(?:\n|$)/g, '')
       .replace(/\n|,|;/g, ' ')
       .trim()
