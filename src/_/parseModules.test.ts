@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import { staticFolder } from '../testing/cssserve-config.json';
+import { staticFolder } from '../../testing/cssserve-config.json';
 
 import parseModules from './parseModules.js';
 import {

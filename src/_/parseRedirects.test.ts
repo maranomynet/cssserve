@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
-import redirectsFromFile from '../testing/redirectsFile.json';
-import redirectsFromFile2 from '../testing/redirectsFile2.json';
+import redirectsFromFile from '../../testing/redirectsFile.json';
+import redirectsFromFile2 from '../../testing/redirectsFile2.json';
 
 import { parseRedirects } from './parseRedirects.js';
 

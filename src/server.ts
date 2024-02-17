@@ -6,10 +6,10 @@ import fastify, { FastifyInstance } from 'fastify';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-import config from './config.js';
-import cssBundler from './cssBundler.js';
-import { isDebug, isProd } from './env.js';
-import { registerRedirects } from './registerRedirects.js';
+import config from './_/config.js';
+import cssBundler from './_/cssBundler.js';
+import { isDebug, isProd } from './_/env.js';
+import { registerRedirects } from './_/registerRedirects.js';
 
 const {
   port,
