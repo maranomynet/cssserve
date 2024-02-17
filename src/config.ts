@@ -1,13 +1,10 @@
 import rc from 'rc';
 
-import { name as pkgName } from '../package.json';
-
-import { AppConfig } from './AppConfig';
-import { parseRedirects } from './parseRedirects';
+import { AppConfig } from './AppConfig.js';
+import { parseRedirects } from './parseRedirects.js';
 
 const normalizePathSlash = (path: string) => path.replace(/\/*$/, '/');
 
-const appName = pkgName.split('/').pop()!;
 const HOUR = 60 * 60;
 
 const defaults: AppConfig = {
@@ -21,7 +18,7 @@ const defaults: AppConfig = {
   loudBadTokenErrors: process.env.NODE_ENV !== 'production',
 };
 
-const config = rc(appName, defaults) as AppConfig;
+const config = rc('cssserve', defaults) as AppConfig;
 
 // enforce correct types
 config.port = parseInt(process.env.NODE_PORT || process.env.PORT || '') || config.port;
