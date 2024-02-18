@@ -5,9 +5,10 @@ files.
 
 ---
 
-**Chapters:**
+**Contents:**
 
 <!-- prettier-ignore-start -->
+
 - [How to run it](#how-to-run-it)
 - [Configuration](#configuration)
 - [Log-levels](#log-levels)
