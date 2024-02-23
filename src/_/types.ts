@@ -10,6 +10,7 @@ export class NotFoundError extends Error {
   constructor(message: string) {
     super(message);
     this.__proto__ = new.target.prototype; // TS Extend native type Workaround
+    this.name = 'NotFoundError';
   }
 }
 
@@ -17,16 +18,19 @@ export class ModuleError extends NotFoundError {
   constructor(message: string, moduleName: string) {
     super(`${message}: ${JSON.stringify(moduleName)}`);
     this.moduleName = moduleName;
+    this.name = 'ModuleError';
   }
   moduleName: string;
 }
 export class NonExistentModuleError extends ModuleError {
   constructor(moduleName: string) {
     super('No CSS file matches token', moduleName);
+    this.name = 'NonExistentModuleError';
   }
 }
 export class UnsafeModuleTokenError extends ModuleError {
   constructor(moduleName: string) {
     super('Invalid/Rejected token', moduleName);
+    this.name = 'UnsafeModuleTokenError';
   }
 }
