@@ -1,4 +1,4 @@
-# `cssserve` – CSS Server
+# `cssserve` – CSS Server <!-- omit from toc -->
 
 `cssserve` is a small dedicated HTTP/2 server that serves lots of small CSS
 files.
@@ -131,6 +131,9 @@ Example of how `ModuleA.css` declares its dependencies:
     /* ...styles for ModuleA */
   }
 }
+/*!@deps
+	ContextMenu // NOTE: multiple @deps blocks are supported
+*/
 ```
 
 (See [parseDepsFromCSS.tests](src/parseDepsFromCSS.tests.ts) and
