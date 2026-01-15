@@ -1,8 +1,10 @@
 import { describe, expect, test } from 'bun:test';
 
-import { staticFolder } from '../../testing/cssserve-config.json';
+import cfg from '../../testing/cssserve-config.json' with { type: 'json' };
 
 import resolveCssVersionFolder from './resolveCssVersionFolder.js';
+
+const { staticFolder } = cfg;
 
 // ---------------------------------------------------------------------------
 

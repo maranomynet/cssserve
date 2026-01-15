@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import { staticFolder } from '../../testing/cssserve-config.json';
+import cfg from '../../testing/cssserve-config.json' with { type: 'json' };
 
 import getAllValidCssVersions from './getAllValidCssVersions.js';
 
@@ -8,7 +8,7 @@ import getAllValidCssVersions from './getAllValidCssVersions.js';
 
 describe('getAllValidCssVersions', () => {
   test('works', () => {
-    expect(getAllValidCssVersions(staticFolder)).toEqual({
+    expect(getAllValidCssVersions(cfg.staticFolder)).toEqual({
       dev: 'css/dev/',
       v1: 'css/v1.10.10/',
       'v1.1': 'css/v1.1/',

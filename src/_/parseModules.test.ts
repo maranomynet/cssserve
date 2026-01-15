@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import { staticFolder } from '../../testing/cssserve-config.json';
+import cfg from '../../testing/cssserve-config.json' with { type: 'json' };
 
 import parseModules from './parseModules.js';
 import {
@@ -19,7 +19,7 @@ type Opts = Parameters<typeof parseModules>[2];
 // ---------------------------------------------------------------------------
 
 describe('parseModules', () => {
-  const sourceFolder = `${staticFolder}css/dev/`;
+  const sourceFolder = `${cfg.staticFolder}css/dev/`;
 
   type TestDescr =
     | {
