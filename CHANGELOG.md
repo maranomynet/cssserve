@@ -3,6 +3,7 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. -->
+- feat: Support parsing multiple `@deps` blocks in one file
 - fix: Avoid setting `max-age=undefined` on redirects without `ttl` value
 
 ## 2.4.0

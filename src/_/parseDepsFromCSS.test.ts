@@ -33,6 +33,16 @@ describe('parseDepsFromCSS', () => {
       css: '/*!@deps Foo,Bar,Foo,Foo,Bar*/body{color:red}',
       expects: ['Foo', 'Bar', 'Foo', 'Foo', 'Bar'],
     },
+    // ------------------------
+    'Multiple declarations are supported': {
+      css: '/*!@deps Foo,Bar,Foo*/\n\n/*!@deps Smu, Foo */\nbody{color:red}',
+      expects: ['Foo', 'Bar', 'Foo', 'Smu', 'Foo'],
+    },
+    'Multiple declarations may have CSS between them': {
+      css: '/*!@deps Foo,Bar*/\nbody{color:blue;}\n/*!@deps Smu,Baz */\nbody{color:red}',
+      expects: ['Foo', 'Bar', 'Smu', 'Baz'],
+    },
+
     // NOTE: The parser views CSS files as a trusted source.
     'Is purposefully agnostic about evil module names': {
       css: '/*!@deps Fo/../o, ../Bar ${EVIL} */body{color:red}',
@@ -45,10 +55,6 @@ describe('parseDepsFromCSS', () => {
     },
     'CSS rules may precede the declaration': {
       css: 'body{color:red}/*! @licence Whatever */\n/*!@deps\n\tFoo\tBar\n*/',
-      expects: ['Foo', 'Bar'],
-    },
-    'Only a single @deps declaration is parsed': {
-      css: '/*!@deps\n\tFoo\tBar\n*//*! @deps\n\tBaz\tSmu\n*/body{color:red}',
       expects: ['Foo', 'Bar'],
     },
     // ------------------------
