@@ -48,7 +48,7 @@
     "dev:server": "node _npm-lib/server.js --config testing/cssserve-config.json",
     "publish:lib": "bun scripts/publish.ts",
     "prepublishOnly": "echo \"\nRun 'bun run publish:lib' to publish this package\n\n\"  &&  exit 1",
-    "format": "bun scripts/format.ts"
+    "check": "bun scripts/check.ts"
   },
   "type": "module",
   "private": false,
