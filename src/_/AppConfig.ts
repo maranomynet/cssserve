@@ -63,17 +63,20 @@ export type AppConfig = {
   cache?: boolean;
 
   /**
-   * Is the server proxied behind another server/proxy
-   * that provides **SSL and compression**?
+   * Optionally turns off compression for the server.
    *
-   * Setting `proxied` to true
-   *  - Turns off gzip compression
-   *  - Disables SSL (thus obviating the `ssl*` options below)
-   *  - Switches server to HTTP/1.1 (because lack of SSL keys)
-   *
-   * Default: `false`
+   * Default: `true`
    */
-  proxied: boolean;
+  compression?: boolean;
+
+  /**
+   * Optionally disables SSL for the HTTP server (thus obviating all
+   * other `ssl*` options).  \
+   * Switches server to HTTP/1.1 (because lack of SSL keys)
+   *
+   * Default: `true`
+   */
+  ssl?: boolean;
 
   /**
    * Path leading to the SSL key/cert files.
@@ -168,4 +171,16 @@ export type AppConfig = {
    * `redirectsFile` are merged into it.
    */
   redirectsFile?: string | Array<string>;
+
+  /**
+   * @deprecated Use options `compression` and `ssl` instead.
+   * (Will be removed in v3.0)
+   *
+   * This option acted as a shorthand for `compression: false, ssl: false`
+   *
+   * It is ignored if either `compression` or `ssl` are set.
+   *
+   * Default: `false`
+   */
+  proxied?: boolean;
 };

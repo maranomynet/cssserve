@@ -3,6 +3,8 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. -->
+- feat: Add `config.ssl` and `config.compression` options, deprecate
+  `config.proxied` (which sets both to `false` if new options are undefined)
 
 ## 2.5.0
 

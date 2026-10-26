@@ -3,8 +3,8 @@ import fastifyCompress from '@fastify/compress';
 import fastifyCors from '@fastify/cors';
 import fastifyStatic from '@fastify/static';
 import fastify, { FastifyInstance } from 'fastify';
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 import config from './_/config.js';
 import cssBundler from './_/cssBundler.js';
@@ -15,7 +15,8 @@ const {
   port,
   host,
   staticFolder,
-  proxied,
+  ssl,
+  compression,
   // sslKeyPath,
   sslCert,
   sslPrivkey,
@@ -24,7 +25,7 @@ const {
 
 const sslKeyPath = config.sslKeyPath || `${__dirname}/default-keys/`;
 
-const app = proxied
+const app = !ssl
   ? fastify({})
   : (fastify({
       http2: true,
@@ -35,8 +36,8 @@ const app = proxied
       },
     }) as unknown as FastifyInstance);
 
-if (!proxied) {
-  app.register(fastifyCompress);
+if (!compression) {
+  app.register(fastifyCompress, { global: false });
 }
 
 app.register(fastifyCors, {
@@ -69,7 +70,7 @@ app.get('/bundle/:version', cssBundler);
 app
   .listen({ port, host })
   .then(() => {
-    const protocol = proxied ? 'http' : 'https';
+    const protocol = ssl ? 'https' : 'http';
     console.info(`CSS server listening on ${protocol}://localhost:${port}`);
   })
   .catch((err) => {
