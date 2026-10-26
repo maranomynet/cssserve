@@ -13,7 +13,7 @@ export type AppConfig = {
   /**
    * The hostname/address the server listens on.
    * See Fastify's documentation for details:
-   * https://www.fastify.io/docs/v4.6.x/Reference/Server/#listen
+   * https://fastify.dev/docs/v4.29.x/Reference/Server/#listen
    *
    * Default `"localhost"`
    */
