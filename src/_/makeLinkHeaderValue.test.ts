@@ -10,7 +10,7 @@ describe('makeLinkHeaderValue', () => {
   test('Makes Link HTTP header value list. (No sorting!)', () => {
     const modules = ['B', 'A'];
     expect(makeLinkHeaderValue(cssFolderName, modules)).toBe(
-      '</css/v1/B.css>;rel=preload;as=style,</css/v1/A.css>;rel=preload;as=style'
+      '</css/v1/B.css>;rel=preload;as=style,</css/v1/A.css>;rel=preload;as=style',
     );
   });
 
@@ -23,7 +23,7 @@ describe('makeLinkHeaderValue', () => {
       { name: 'C', empty: true },
     ];
     expect(makeLinkHeaderValue(cssFolderName, modules)).toBe(
-      '</css/v1/B.css>;rel=preload;as=style,</css/v1/A.css>;rel=preload;as=style'
+      '</css/v1/B.css>;rel=preload;as=style,</css/v1/A.css>;rel=preload;as=style',
     );
   });
 

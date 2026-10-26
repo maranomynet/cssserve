@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 import { AppConfig } from './AppConfig.js';
 import { onCacheRefresh } from './cacheRefresher.js';
@@ -25,7 +25,7 @@ const makeModuleValidator = (sourceFolder: string) => (moduleName: string) => {
 const findFirstError = (
   modules: ReadonlyArray<string>,
   isInvalidModule: ReturnType<typeof makeModuleValidator>,
-  loudErrors: boolean | undefined
+  loudErrors: boolean | undefined,
 ) => {
   let moduleError: ReturnType<typeof isInvalidModule>;
   modules.find((moduleName) => {
@@ -58,7 +58,7 @@ const getDepsFor = (file: string, cache = true) => {
 const parseModules = (
   modules: ReadonlyArray<string>,
   sourceFolder: string,
-  opts: Pick<AppConfig, 'cache' | 'loudBadTokenErrors'>
+  opts: Pick<AppConfig, 'cache' | 'loudBadTokenErrors'>,
 ): Promise<ParsedModules> =>
   new Promise((resolve, reject) => {
     const isInvalidModule = makeModuleValidator(sourceFolder);
@@ -83,8 +83,8 @@ const parseModules = (
           logInfo(
             `NOTE:` +
               `\n  Invalid @deps token ${JSON.stringify(
-                moduleName
-              )}\n  in file ${contextFile}`
+                moduleName,
+              )}\n  in file ${contextFile}`,
           );
         }
         return list.concat({ name: moduleName, invalid: true });

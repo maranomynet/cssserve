@@ -51,7 +51,7 @@ class VersionError extends NotFoundError {
 }
 
 const getCssBundle = (
-  req: FastifyRequest
+  req: FastifyRequest,
 ): Promise<BundleData | { error: NotFoundError }> =>
   Promise.resolve()
     .then(() => {
@@ -90,7 +90,7 @@ const getCssBundle = (
 
       // Check if a cached result exists for the normalized version of the token list
       const normalizedTokens = `${versionFolder}|${modules.join(
-        ','
+        ',',
       )}|${loudBadTokenErrors}`;
       cachedBundle = bundleCache.get(normalizedTokens);
       if (cachedBundle) {

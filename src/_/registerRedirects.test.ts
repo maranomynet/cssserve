@@ -15,7 +15,7 @@ describe('_normalizeRedirects', () => {
         '/foo': '/bar',
         '/foo2': '/bar2',
         '/foo3': 'https://www.external.com/bar3',
-      })
+      }),
     ).toEqual({
       '/foo': { target: '/bar', status, ttl },
       '/foo2': { target: '/bar2', status, ttl },
@@ -27,7 +27,7 @@ describe('_normalizeRedirects', () => {
     expect(
       _normalizeRedirects({
         '/foo/': '/bar',
-      })
+      }),
     ).toEqual({
       '/foo/': { target: '/bar', status, ttl },
       '/foo': { target: '/bar', status, ttl },
@@ -37,7 +37,7 @@ describe('_normalizeRedirects', () => {
       _normalizeRedirects({
         '/foo/': '/bar',
         '/foo': '/barbar',
-      })
+      }),
     ).toEqual({
       '/foo/': { target: '/bar', status, ttl },
       '/foo': { target: '/barbar', status, ttl },
@@ -47,7 +47,7 @@ describe('_normalizeRedirects', () => {
       _normalizeRedirects({
         '/foo': '/barbar',
         '/foo/': '/bar',
-      })
+      }),
     ).toEqual({
       '/foo/': { target: '/bar', status, ttl },
       '/foo': { target: '/barbar', status, ttl },
@@ -59,7 +59,7 @@ describe('_normalizeRedirects', () => {
       _normalizeRedirects({
         '/foo': '/bar#666',
         '/foo2': 'https://www.external.com/bar3#99',
-      })
+      }),
     ).toEqual({
       '/foo': { target: '/bar', status, ttl: 666 },
       '/foo2': { target: 'https://www.external.com/bar3', status, ttl: 99 },
@@ -87,7 +87,7 @@ describe('_normalizeRedirects', () => {
       _normalizeRedirects({
         '/foo': '/bar',
         '/foo2': '/bar#!',
-      })
+      }),
     ).toEqual({
       '/foo': { target: '/bar', status, ttl },
       '/foo2': { target: '/bar', status: 301 },

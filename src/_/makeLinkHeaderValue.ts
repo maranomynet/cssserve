@@ -2,7 +2,7 @@ import { ParsedModules } from './types.js';
 
 const makeLinkHeaderValue = (
   versionFolder: string,
-  modules: ParsedModules
+  modules: ParsedModules,
 ): string | undefined =>
   modules
     .filter((moduleName) => typeof moduleName === 'string')

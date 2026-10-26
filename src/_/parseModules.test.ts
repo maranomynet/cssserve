@@ -131,7 +131,7 @@ describe('parseModules', () => {
       const modulesP = parseModules(
         testInfo.input,
         sourceFolder,
-        testInfo.opts || defaultOpts
+        testInfo.opts || defaultOpts,
       );
 
       if ('expected' in testInfo) {
@@ -146,12 +146,12 @@ describe('parseModules', () => {
             if ('notFound' in testInfo.error) {
               expect(err).toBeInstanceOf(NonExistentModuleError);
               expect((err as NonExistentModuleError).moduleName).toBe(
-                testInfo.error.notFound
+                testInfo.error.notFound,
               );
             } else {
               expect(err).toBeInstanceOf(UnsafeModuleTokenError);
               expect((err as UnsafeModuleTokenError).moduleName).toBe(
-                testInfo.error.invalid
+                testInfo.error.invalid,
               );
             }
           });

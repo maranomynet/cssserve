@@ -10,7 +10,7 @@ onCacheRefresh(() => {
 
 const resolveCssVersionFolder = (
   staticFolder: string,
-  versionParam: string | undefined
+  versionParam: string | undefined,
 ): string | null => {
   if (!versionParam || !isSafeToken(versionParam)) {
     return null;

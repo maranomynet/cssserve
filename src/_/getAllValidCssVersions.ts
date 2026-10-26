@@ -14,7 +14,7 @@ const getAllValidCssVersions = (staticFolder: string): Record<string, string> =>
       .reduce<Array<string>>(
         (superVersions, token, i, arr) =>
           superVersions.concat([arr.slice(0, i + 1).join('.')]),
-        []
+        [],
       );
     superVersions.forEach((superVersion) => {
       if (!versions[superVersion]) {

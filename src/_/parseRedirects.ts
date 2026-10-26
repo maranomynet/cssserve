@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync } from 'node:fs';
 
 import { AppConfig } from './AppConfig.js';
 
@@ -24,7 +24,7 @@ const ensureStringMap = (cand: unknown): Record<string, string> | undefined => {
 
 export const parseRedirects = (
   redirects?: AppConfig['redirects'],
-  redirectsFile?: AppConfig['redirectsFile']
+  redirectsFile?: AppConfig['redirectsFile'],
 ) => {
   if (redirects !== undefined) {
     redirects = ensureStringMap(redirects);
@@ -52,7 +52,7 @@ export const parseRedirects = (
       const fileRedirects = ensureStringMap(parsedContents);
       if (!fileRedirects) {
         throw new Error(
-          `The redirectsFile "${file}" must contain \`Record<string, string>\``
+          `The redirectsFile "${file}" must contain \`Record<string, string>\``,
         );
       }
       if (redirects) {

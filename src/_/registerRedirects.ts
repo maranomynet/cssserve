@@ -24,7 +24,7 @@ type NormalizedRedirects = Record<string, RedirectInfo>;
 export const MIN_TTL = 60;
 
 export const _normalizeRedirects = (
-  redirects: AppConfig['redirects']
+  redirects: AppConfig['redirects'],
 ): NormalizedRedirects | undefined => {
   if (!redirects) {
     return;
@@ -39,7 +39,7 @@ export const _normalizeRedirects = (
         let redirectInfo: RedirectInfo;
         const [target, ttlStr] = targetInfo.trim().split('#') as [
           string,
-          ...Array<string>
+          ...Array<string>,
         ];
         if (ttlStr === '!') {
           redirectInfo = { target, status: 301 };
@@ -55,12 +55,12 @@ export const _normalizeRedirects = (
         });
       })
       .sort(([, infoA], [, infoB]) =>
-        (infoA as AutoInfo).auto && !(infoB as AutoInfo).auto ? -1 : 0
+        (infoA as AutoInfo).auto && !(infoB as AutoInfo).auto ? -1 : 0,
       )
       .map((entry) => {
         delete (entry[1] as AutoInfo).auto;
         return entry;
-      })
+      }),
   );
 };
 
