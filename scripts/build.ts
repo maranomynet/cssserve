@@ -5,7 +5,7 @@ import {
   shell$,
 } from '@maranomynet/libtools';
 
-await shell$(`TEST=true  bun test`);
+await shell$(`TEST=true  bun test --dots`);
 await errorCheckSources();
 await buildNpmLib({ type: 'commonjs' });
 await shell$(`cp -R default-keys ${distFolder}/`);
