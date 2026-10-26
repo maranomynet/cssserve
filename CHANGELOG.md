@@ -3,6 +3,11 @@
 ## Upcoming...
 
 - ... <!-- Add new lines here. -->
+
+## 2.6.0
+
+_2026-10-26_
+
 - feat: Add `config.ssl` and `config.compression` options, deprecate
   `config.proxied` (which sets both to `false` if new options are undefined)
 
